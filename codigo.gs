@@ -1,0 +1,112 @@
+<? var r = record; ?>
+<!DOCTYPE html>
+<html lang="es" class="pos58">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ticket 58mm</title>
+  <style>
+    @media print {
+      @page { size: 58mm auto; margin: 0; }
+      html, body { width: 58mm; margin: 0; padding: 0; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 6mm 4mm 4mm;
+      font-family: "Courier New", Courier, monospace;
+      line-height: 1.35;
+      font-size: 12pt;
+      color: #000;
+    }
+    header { text-align: center; margin-bottom: 6mm; }
+    header img { display: block; margin: 0 auto; height: 192px; width: auto; }
+    h1 {
+      font-size: 14pt; font-weight: 700; margin: 0 0 4mm; text-align: left;
+    }
+    .line { white-space: pre-wrap; margin: 0 0 1.5mm; font-weight: 400; }
+    .label { font-weight: 700; }
+    .divider { border-top: 1px dashed #000; margin: 3mm 0; }
+  </style>
+</head>
+<body>
+  <? var logoSrc = (r && r['Logo URL']) ? r['Logo URL'] : 'https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/Smile%20Center.svg'; ?>
+  <header>
+    <img src="<?= logoSrc ?>" alt="Logo" />
+  </header>
+
+  <h1>Datos de la orden:</h1>
+
+  <div class="divider"></div>
+
+  <div class="line"><span class="label">Id orden:</span> <?= r['ID Orden'] ?></div>
+  <div class="line"><span class="label">Fecha de creación:</span> <span id="fechaCreacionRaw"><?= r['Timestamp'] ?></span><span id="fechaCreacionFmt"></span></div>
+  <div class="line"><span class="label">Fecha requerida:</span> <span id="fechaReqRaw"><?= r['Fecha Requerida'] ?></span><span id="fechaReqFmt"></span></div>
+  <div class="line"><span class="label">Garantía:</span> <?= r['Garantía'] ?></div>
+  <div class="line"><span class="label">Terminado:</span> <?= r['Terminado'] ?></div>
+
+  <div class="divider"></div>
+
+  <? var clienteNombre = [r['Nombre'], r['Apellido']].filter(function(v){ return v; }).join(' '); ?>
+  <div class="line"><span class="label">Cliente: Nombre:</span> <?= clienteNombre ?></div>
+  <div class="line"><span class="label">Cliente: Teléfono:</span> <?= r['Teléfono'] ?></div>
+
+  <div class="divider"></div>
+
+  <div class="line"><span class="label">Detalles del trabajo:</span></div>
+  <div class="line"><span class="label">Tipo de trabajo:</span> <?= r['Tipo de trabajo'] ?></div>
+  <div class="line"><span class="label">Material:</span> <?= r['Material'] ?></div>
+  <div class="line"><span class="label">Especificación:</span> <?= r['Especificación'] ?></div>
+  <div class="line"><span class="label">Dientes seleccionados:</span> <?= r['Dientes Seleccionados'] ?></div>
+  <div class="line"><span class="label">Color:</span> <?= r['Color Global'] ?></div>
+  <div class="line"><span class="label">Costos:</span> Costo $<?= r['Costo'] ?> · A cuenta $<?= r['A Cuenta'] ?> · Total $<?= r['Total'] ?></div>
+
+  <? var notas =
+    r['Notas'] ||
+    r['Notas / Observaciones'] ||
+    r['Notas y Observaciones'] ||
+    r['Observaciones'] ||
+    ''; ?>
+
+  <? if (notas) { ?>
+    <div class="divider"></div>
+    <div class="line"><span class="label">Notas:</span> <?= notas ?></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+  <? } ?>
+
+  <script>
+    (function () {
+      function fmtDateUpToSeconds(value) {
+        try {
+          var d = new Date(value);
+          if (isNaN(d)) return String(value || '');
+          // Example: "Fri Oct 03 2025 12:45:25" (strip timezone and beyond)
+          return d.toString().split(' GMT')[0];
+        } catch (e) {
+          return String(value || '');
+        }
+      }
+
+      function swapRawWithFormatted(rawId, fmtId) {
+        var rawEl = document.getElementById(rawId);
+        var fmtEl = document.getElementById(fmtId);
+        if (!rawEl || !fmtEl) return;
+        var raw = rawEl.textContent || rawEl.innerText || '';
+        var nice = fmtDateUpToSeconds(raw);
+        // Replace raw text with formatted; keep label intact
+        rawEl.style.display = 'none';
+        fmtEl.textContent = ' ' + nice; // leading space to separate from label
+      }
+
+      // Apply to both dates
+      swapRawWithFormatted('fechaCreacionRaw', 'fechaCreacionFmt');
+      swapRawWithFormatted('fechaReqRaw', 'fechaReqFmt');
+    })();
+  </script>
+
+  <script>
+    window.addEventListener('load', function(){
+      setTimeout(function(){ window.print(); }, 250);
+    });
+  </script>
+</body>
+</html>
