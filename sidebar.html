@@ -1,1 +1,3000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background-top: #3a3a3a;
+      --background-bottom: #1a1a1a;
+      --panel-background: rgba(17, 17, 17, 0.55);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --panel-inner-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -12px 32px rgba(0, 0, 0, 0.55);
+      --panel-drop-shadow: 0 22px 46px rgba(0, 0, 0, 0.55);
+      --text-primary: #e0e0e0;
+      --text-secondary: #aaaaaa;
+      --text-muted: #777777;
+      --heading-text: #ffffff;
+      --divider: rgba(255, 255, 255, 0.08);
+      --input-background: rgba(26, 26, 26, 0.6);
+      --input-border: #333333;
+      --input-text: #e0e0e0;
+      --placeholder-text: #666666;
+      --focus-glow: 0 0 0 2px rgba(255, 255, 255, 0.3), 0 0 12px rgba(255, 255, 255, 0.35);
+      --banner-surface: rgba(28, 28, 28, 0.7);
+      --banner-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+      --button-primary-start: #000000;
+      --button-primary-end: #333333;
+      --button-secondary: #222222;
+      --button-hover: #444444;
+      --success-accent: #2ecc71;
+      --success-surface: rgba(46, 204, 113, 0.18);
+      --success-surface-strong: rgba(46, 204, 113, 0.32);
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(160deg, var(--background-top) 0%, var(--background-bottom) 100%);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .field{margin:10px 0}
+
+    .layout {
+      padding: 0 24px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .app-header {
+      position: relative;
+      overflow: hidden;
+      color: var(--heading-text);
+      width: 100%;
+      border-radius: 0 0 28px 28px;
+      border: none;
+      background: linear-gradient(120deg, rgba(180, 180, 180, 0.85) 0%, rgba(60, 60, 60, 0.9) 45%, rgba(10, 10, 10, 0.95) 100%);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.7), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(14px);
+      isolation: isolate;
+      min-height: 90px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: center;
+      padding: 18px 0;
+    }
+
+    .app-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 28px;
+    }
+
+    .app-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.18) 0%, transparent 60%),
+                  radial-gradient(circle at 88% 12%, rgba(90, 155, 255, 0.18) 0%, transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+
+    .hero-logo-wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .app-header .logo {
+  height: 100px;   /* bigger logo */
+  width: auto;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6)); /* subtle glow/shadow */
+  transition: transform 0.2s ease; /* smooth hover effect */
+}
+
+.app-header .logo:hover {
+  transform: scale(1.05); /* small grow on hover */
+}
+
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      text-align: right;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 440px;
+    }
+
+    .banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: var(--banner-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--banner-shadow);
+      backdrop-filter: blur(10px);
+      transition: opacity 0.3s ease;
+    }
+
+    .banner-success {
+      color: var(--text-primary);
+    }
+
+    .banner-error {
+      color: var(--text-primary);
+    }
+
+    .banner-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      color: var(--heading-text);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--panel-background);
+      color: var(--text-primary);
+      border-radius: 18px;
+      padding: 24px 26px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--panel-inner-shadow), var(--panel-drop-shadow);
+    }
+
+    .success-card {
+      position: relative;
+      border-left: 4px solid var(--success-accent);
+      background: linear-gradient(145deg, var(--success-surface) 0%, rgba(17, 17, 17, 0.75) 65%, rgba(10, 10, 10, 0.85) 100%);
+    }
+
+    .success-card.success-card-visible {
+      animation: successCardFadeIn 0.35s ease;
+    }
+
+    .success-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .success-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading-text);
+    }
+
+    .success-card-heading {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: inherit;
+    }
+
+    .success-card-icon {
+      font-size: 1.2rem;
+    }
+
+    .success-card-message {
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .success-card-close {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text-primary);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .success-card-close:hover,
+    .success-card-close:focus {
+      background: var(--success-surface-strong);
+      border-color: rgba(46, 204, 113, 0.6);
+      color: var(--heading-text);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.35);
+    }
+
+    @keyframes successCardFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading-text);
+      margin: 0 0 18px 0;
+      letter-spacing: 0.02em;
+    }
+
+    .section-title button {
+      font-size: 0.8rem;
+    }
+
+    .section-subtitle {
+      margin: -6px 0 18px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px 16px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .checklist-group {
+      display: grid;
+      gap: 6px;
+      padding: 6px 0;
+    }
+
+    .checklist-group label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+
+    .switch-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: #555555;
+      border-radius: 999px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .switch .slider::before {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 2px;
+      top: 2px;
+      background: #ffffff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .switch input:focus + .slider {
+      box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.4);
+    }
+
+    .switch input:checked + .slider {
+      background: #2ecc71;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(22px);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--input-border);
+      background: var(--input-background);
+      font-size: 0.9rem;
+      color: var(--input-text);
+      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--placeholder-text);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: var(--focus-glow);
+      background: rgba(30, 30, 30, 0.75);
+    }
+
+    .input-with-symbol {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      background: var(--input-background);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .input-with-symbol span {
+      padding-left: 12px;
+      padding-right: 6px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .input-with-symbol input {
+      border: none;
+      padding-left: 4px;
+      width: 100%;
+      background: transparent;
+      color: var(--input-text);
+    }
+
+    .inline-warning {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    .odontograma-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      width: 100%;
+      color: var(--text-primary);
+    }
+
+    .odontograma-section h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading-text);
+      text-align: center;
+    }
+
+    .odontograma-section .section-subtitle {
+      margin: 0;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .odontograma-row {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .odontograma-block {
+      flex: 1 1 260px;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: transparent;
+    }
+
+    .odontograma-canvas {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .odontograma-img {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.55));
+    }
+
+    .tooth-label-overlay,
+    .bridge-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .tooth-label-overlay {
+      z-index: 6;
+    }
+
+    .bridge-overlay {
+      z-index: 8;
+    }
+
+    .tooth-label-overlay text {
+      fill: rgba(255, 255, 255, 0.92);
+      stroke: rgba(0, 0, 0, 0.55);
+      stroke-width: 4;
+      paint-order: stroke fill;
+      font-size: 28px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bridge-overlay path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.88;
+      filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
+    }
+
+    /* Put highlight UNDER numbers */
+    #highlightOverlay,
+    #highlightOverlayMandibula { z-index: 5 !important; }   /* labels = 6, bridges = 8 */
+
+    /* Bridges always red with numbered nodes */
+    .bridge-path {
+      stroke: #d32f2f; fill: none;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .bridge-node {
+      fill: #fff; stroke: #d32f2f; stroke-width: 3;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.15));
+    }
+    .bridge-node-label {
+      fill: #d32f2f; font-weight: 800;
+      text-anchor: middle; dominant-baseline: middle;
+      stroke: #fff; stroke-width: 2; paint-order: stroke fill;
+    }
+
+    /* Mode toggle chips & draft controls */
+    .mode-toggle{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 12px;font-weight:600;color:var(--heading-text);}
+    .mode-toggle .chip{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.25);}
+    .mode-toggle .chip.active{background:rgba(211,47,47,0.15);border-color:rgba(211,47,47,0.5);color:#fff;}
+    .bridge-draft-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+    .bridge-draft-actions .btn{border-radius:10px;padding:8px 12px;font-weight:700;border:1px solid rgba(255,255,255,0.14);
+      background:rgba(255,255,255,0.06);color:var(--heading-text);cursor:pointer;}
+    .bridge-draft-actions .btn.confirm{background:rgba(211,47,47,0.18);border-color:#e57373;}
+    .bridge-draft-actions .btn.cancel{background:rgba(255,255,255,0.06);}
+
+    map area {
+      cursor: pointer;
+      outline: none;
+    }
+
+    #highlightOverlay circle,
+    #highlightOverlayMandibula circle {
+      fill: rgba(0, 123, 255, 0.32);
+      stroke: rgba(120, 190, 255, 0.95);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 6px rgba(0, 153, 255, 0.7));
+    }
+
+    .odontograma-placeholder {
+      width: 100%;
+      max-width: 600px;
+      min-height: 320px;
+      border: 2px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .total-display {
+      background: rgba(10, 10, 10, 0.65);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-weight: 600;
+      color: var(--heading-text);
+      border: 1px solid var(--panel-border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .vita-shade-card {
+      position: relative;
+    }
+
+    .color-selection-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .color-card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .color-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .color-mode-toggle .toggle-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .switch.switch-compact {
+      transform: scale(0.9);
+    }
+
+    .shade-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .shade-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--heading-text);
+    }
+
+    /* Ajuste compacto VITA */
+    .vita-shade-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .shade-button {
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .vita-swatch {
+      padding: 2px;
+      margin: 0;
+      font-size: 0;
+      color: transparent;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .vita-swatch::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: var(--shade-color, #cccccc);
+      box-sizing: border-box;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      display: block;
+    }
+
+    .vita-swatch:hover,
+    .vita-swatch:focus-visible {
+      transform: scale(1.12);
+      outline: none;
+    }
+
+    .vita-swatch:hover::before,
+    .vita-swatch:focus-visible::before {
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 0 6px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Always-visible VITA code under each swatch */
+    .vita-swatch::after {
+      content: attr(data-shade-code);
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      background: rgba(17,17,17,0.75);
+      padding: 2px 6px;
+      border-radius: 6px;
+      pointer-events: none;
+      opacity: 1;          /* was hidden on idle */
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .vita-swatch.shade-button--light::before {
+      border-color: rgba(0, 0, 0, 0.28);
+    }
+
+    .vita-swatch.shade-button--dark::before {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Stronger active ring + brighter label */
+    .vita-swatch.shade-button--active::before {
+      outline: 2px solid rgba(255,255,255,0.6);
+      outline-offset: 1px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.55),
+        0 0 6px rgba(255,255,255,0.35);
+    }
+    .vita-swatch.shade-button--active::after {
+      background: rgba(255,255,255,0.14);
+      color: var(--heading-text);
+    }
+
+    .shade-details {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .shade-details strong {
+      color: var(--heading-text);
+    }
+
+    @media (max-width: 640px) {
+      .vita-shade-grid {
+        justify-content: flex-start;
+      }
+    }
+
+    .form-notes .notes-field {
+      grid-column: 1 / -1;
+    }
+
+    .form-notes textarea {
+      min-height: 110px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button[type="submit"],
+    button[type="reset"] {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    button[type="submit"],
+    button[type="reset"] {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+      color: #ffffff;
+      background: var(--button-secondary);
+      outline: none;
+    }
+
+    button[type="submit"].primary {
+      background: linear-gradient(135deg, var(--button-primary-start), var(--button-primary-end));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+    }
+
+    button[type="reset"].secondary {
+      background: var(--button-secondary);
+      border-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
+    button[type="submit"]:hover:not(:disabled),
+    button[type="reset"]:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: var(--button-hover);
+    }
+
+    button[type="submit"].primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #111111, #444444);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+    }
+
+    button[type="reset"].secondary:hover:not(:disabled) {
+      background: #333333;
+      color: #ffffff;
+    }
+
+    button[type="submit"]:focus,
+    button[type="reset"]:focus {
+      box-shadow: var(--focus-glow);
+    }
+
+    button[type="submit"]:disabled,
+    button[type="reset"]:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .app-footer {
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--divider);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .app-footer .footer-logo {
+      height: 25px;
+      width: auto;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    }
+
+    .selected-teeth-display {
+      margin-top: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: var(--text-secondary);
+      padding: 12px;
+      background: rgba(15, 15, 15, 0.6);
+      border-radius: 14px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .odontograma-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .odontograma-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bridge-button {
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--heading-text);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 24px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .bridge-button:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 14px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .bridge-button:active {
+      transform: translateY(0);
+    }
+
+    .bridge-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-radius: 14px;
+      background: rgba(10, 10, 10, 0.55);
+      border: 1px solid var(--panel-border);
+      padding: 12px 14px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .bridge-list.empty {
+      display: none;
+    }
+
+    .bridge-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .bridge-item strong {
+      color: var(--heading-text);
+      font-weight: 600;
+    }
+
+    .bridge-item .bridge-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .bridge-swatch {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+      margin-right: 8px;
+    }
+
+    .bridge-remove {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      border-radius: 8px;
+      color: var(--heading-text);
+      padding: 6px 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .bridge-remove:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 540px) {
+      .odontograma-row {
+        flex-direction: column;
+        align-items: center;
+        overflow-x: visible;
+      }
+
+      .odontograma-block {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .app-header {
+        padding: 32px 0 36px;
+      }
+
+      .app-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 20px;
+        padding: 0 28px;
+      }
+
+      .hero-text {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .buttons button {
+        width: 100%;
+      }
+    }
+    /* Reset default icon look */
+#fechaRequerida {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  padding-right: 40px; /* space for custom icon */
+}
+
+/* Keep the native picker clickable but overlay a white calendar */
+#fechaRequerida::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  color: white;
+  opacity: 0; /* invisible but still clickable */
+  cursor: pointer;
+}
+
+/* Custom white calendar icon as background */
+  #fechaRequerida {
+    background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+<rect x='3' y='4' width='18' height='18' rx='2' ry='2'/>\
+<line x1='16' y1='2' x2='16' y2='6'/>\
+<line x1='8' y1='2' x2='8' y2='6'/>\
+<line x1='3' y1='10' x2='21' y2='10'/>\
+</svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px 18px;
+  }
+
+/* === VITA palette: compact, grouped, readable === */
+#vitaShadeGrid.vita-palette {
+  display: grid;
+  gap: 10px 12px;
+}
+
+.vita-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: start;
+  gap: 6px 10px;
+}
+
+.vita-row .row-title {
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.vita-row .row-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;     /* spacing between dots */
+}
+
+.shade-btn {
+  --dot-size: 18px; /* tweak for smaller/bigger */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+  min-width: calc(var(--dot-size) + 6px);
+}
+
+.shade-btn:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 0.25rem rgba(255,255,255,0.35));
+}
+
+/* colored dot */
+.shade-btn .dot {
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.25);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+  background: var(--shade-color, #ccc);
+}
+
+/* code label under the dot */
+.shade-btn .code {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+/* active state ring + brighter label */
+.shade-btn.active .dot {
+  outline: 2px solid rgba(255,255,255,0.6);
+  outline-offset: 1px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.55),
+    0 0 6px rgba(255,255,255,0.35);
+}
+.shade-btn.active .code {
+  color: var(--heading-text);
+  background: rgba(255,255,255,0.12);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+@media (max-width: 540px) {
+  .shade-btn { --dot-size: 16px; }
+  .vita-row .row-title { font-size: 0.75rem; }
+  .shade-btn .code { font-size: 0.68rem; }
+}
+
+/* ===== Context-specific tuning for VITA palette ===== */
+
+/* Sidebar: compact */
+.sidebar .vita-palette .shade-btn { --dot-size: 18px; }
+.sidebar .vita-row .row-title { font-size: 0.8rem; }
+
+/* Web app: roomier & centered so it doesn't feel empty */
+.webapp .color-selection-card { padding-top: 4px; }
+.webapp #vitaShadeGrid.vita-palette {
+  gap: 14px 16px;
+  max-width: 720px;
+  margin: 0 auto;              /* center the palette block */
+}
+.webapp .vita-row {
+  grid-template-columns: 28px 1fr;
+}
+.webapp .vita-row .row-title {
+  font-size: 0.9rem;
+  letter-spacing: .02em;
+  color: var(--heading-text);
+  opacity: .9;
+}
+.webapp .vita-row .row-swatches {
+  gap: 12px 14px;              /* more separation on web */
+}
+.webapp .shade-btn { --dot-size: 22px; }
+.webapp .shade-btn .code { font-size: .78rem; }
+
+/* Subtle card background in web app for visual weight */
+.webapp .vita-shade-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Tighten at smaller widths to avoid overflow */
+@media (max-width: 860px) {
+  .webapp .shade-btn { --dot-size: 20px; }
+  .webapp .vita-row .row-swatches { gap: 10px 12px; }
+}
+
+/* === Dark action button: Agregar doctor === */
+.btn {
+  appearance: none;
+  border: 1px solid #2a2f3a;
+  background: linear-gradient(180deg, #1f2430 0%, #171a23 100%);
+  color: #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: .2px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset,
+              0 6px 14px rgba(0,0,0,.25);
+  transition: transform .06s ease, box-shadow .15s ease,
+              border-color .15s ease, background .15s ease;
+}
+.btn:hover {
+  border-color: #3a4151;
+  background: linear-gradient(180deg, #232938 0%, #191e27 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset,
+              0 10px 22px rgba(0,0,0,.35),
+              0 0 0 3px rgba(59,130,246,.12);
+}
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+  border-color: #4b5563;
+}
+.btn-sm { padding: 8px 12px; border-radius: 8px; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; filter: grayscale(.2); }
+    </style>
+  <style>
+  /* Autosuggest — dark, readable */
+  .hint-list {
+    position: relative;
+    z-index: 20;
+  }
+
+  .hint-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 1600;
+    background: #0b1220;
+    border: 1px solid #273244;
+    border-radius: 12px;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+    overflow: auto;
+    max-height: 320px;
+    padding: 8px;
+  }
+
+  .hint-menu::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .hint-menu::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.55);
+    border-radius: 6px;
+  }
+
+  .hint-item {
+    display: block;
+    padding: 12px 16px;
+    border-radius: 10px;
+    line-height: 1.35;
+    cursor: pointer;
+    color: #e5e7eb;
+    font-size: 15px;
+    border: 1px solid transparent;
+    background: rgba(17, 24, 39, 0.25);
+    transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .hint-item + .hint-item {
+    margin-top: 6px;
+  }
+
+  .hint-item:hover,
+  .hint-item[aria-selected="true"] {
+    background: #111827;
+    border-color: rgba(59, 130, 246, 0.45);
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35);
+  }
+
+  .hint-name {
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+
+  .hint-meta {
+    margin-top: 4px;
+    color: #94a3b8;
+    font-size: 12.5px;
+  }
+
+  .hint-list.open .hint-menu {
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body class="<?= APP_CONTEXT ?>">
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div class="hero-logo-wrapper">
+        <img src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/smilecenterblanco.svg" alt="Smile Center Logo" class="logo">
+      </div>
+      <div class="hero-text">
+        <h1 class="hero-title">Smile Center</h1>
+        <p class="hero-subtitle">Orden de laboratorio dental · Seguimiento preciso de cada pieza y tratamiento.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div id="feedback" class="banner hidden" role="alert" aria-live="assertive">
+      <span class="banner-icon" aria-hidden="true"></span>
+      <span class="banner-text"></span>
+    </div>
+
+    <div id="successCard" class="card success-card hidden" role="status" aria-live="polite">
+      <div class="success-card-header">
+        <div class="success-card-title">
+          <span class="success-card-icon" aria-hidden="true">✅</span>
+          <h2 class="success-card-heading">Orden guardada</h2>
+        </div>
+        <button type="button" class="success-card-close" id="successCardClose">Cerrar</button>
+      </div>
+      <p id="successCardMessage" class="success-card-message"></p>
+    </div>
+
+    <form id="ordenForm" novalidate>
+      <section class="card">
+        <h2 class="section-title">Información de cliente</h2>
+        <div class="grid grid-3">
+          <div>
+            <label for="dentistNombre">Nombre *</label>
+            <input type="text" id="dentistNombre" name="dentistNombre" autocomplete="given-name" required>
+          </div>
+          <div>
+            <label for="dentistApellido">Apellido *</label>
+            <input type="text" id="dentistApellido" name="dentistApellido" autocomplete="family-name" required>
+          </div>
+          <div>
+            <label for="dentistNumero">Número de contacto</label>
+            <input type="tel" id="dentistNumero" name="dentistNumero" placeholder="+52 000 000 0000" autocomplete="tel">
+          </div>
+          <div>
+            <label for="tipoCliente">Tipo de cliente</label>
+            <select id="tipoCliente" name="tipoCliente">
+              <option value="Maquila">Maquila</option>
+              <option value="Dentista">Dentista</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="doctorSearch">Doctor (buscar en directorio)</label>
+          <input id="doctorSearch" type="text" placeholder="Escribe 2+ letras para buscar..." autocomplete="off" />
+          <div id="doctorHints" class="hint-list" style="display:none"></div>
+        </div>
+
+        <div class="row" style="display:flex; gap:8px; align-items:flex-end;">
+          <div style="flex:2">
+            <label for="doctorNombre">Nombre del doctor</label>
+            <input id="doctorNombre" type="text" placeholder="Nombre completo" />
+          </div>
+          <div style="flex:1">
+            <label for="doctorTel">Teléfono</label>
+            <input id="doctorTel" type="text" placeholder="(opcional)" />
+          </div>
+          <div>
+            <button id="btnAddDoctor" type="button" class="btn btn-sm">Agregar doctor</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Información del paciente</h2>
+        <div class="grid grid-2">
+          <div class="field">
+            <label>Paciente</label>
+            <input id="pacienteInput" type="text" placeholder="Escribe nombre del paciente…" autocomplete="off">
+          </div>
+          <div>
+            <label for="fechaRequerida">Fecha requerida *</label>
+            <input type="date" id="fechaRequerida" name="fechaRequerida" required>
+          </div>
+          <div>
+            <label for="urgente">¿Urgente?</label>
+            <select id="urgente" name="urgente">
+              <option value="No" selected>No</option>
+              <option value="Sí">Sí</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Detalles de la orden</h2>
+        <div class="grid grid-3">
+          <div>
+            <label>Tipo de trabajo</label>
+            <div class="checklist-group" id="tipoTrabajo">
+              <label><input type="checkbox" name="tipoTrabajo" value="Corona monolítica"> Corona monolítica</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Incrustación"> Incrustación</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Núcleo"> Núcleo</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Puente Maryland"> Puente Maryland</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Puente California"> Puente California</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Carilla"> Carilla</label>
+              <label><input type="checkbox" name="tipoTrabajo" value="Escaneo"> Escaneo</label>
+            </div>
+          </div>
+          <div>
+            <label>Material</label>
+            <div class="checklist-group" id="material">
+              <label><input type="checkbox" name="material" value="Zirconia opaca"> Zirconia opaca</label>
+              <label><input type="checkbox" name="material" value="Zirconia estándar"> Zirconia estándar</label>
+              <label><input type="checkbox" name="material" value="Zirconia traslúcida"> Zirconia traslúcida</label>
+              <label><input type="checkbox" name="material" value="Cera"> Cera</label>
+              <label><input type="checkbox" name="material" value="3/4 Cutback"> 3/4 Cutback</label>
+              <label><input type="checkbox" name="material" value="Vaneer"> Vaneer</label>
+              <label><input type="checkbox" name="material" value="Discilicato"> Discilicato</label>
+              <label><input type="checkbox" name="material" value="Signum"> Signum</label>
+              <label><input type="checkbox" name="material" value="Inyección"> Inyección</label>
+              <label><input type="checkbox" name="material" value="Metalica"> Metalica</label>
+              <label><input type="checkbox" name="material" value="PMMA"> PMMA</label>
+            </div>
+          </div>
+          <div>
+            <label>Especificación</label>
+            <div class="checklist-group" id="especificacion">
+              <label><input type="checkbox" name="especificacion" value="Correr"> Correr</label>
+              <label><input type="checkbox" name="especificacion" value="Recortar"> Recortar</label>
+              <label><input type="checkbox" name="especificacion" value="Dados"> Dados</label>
+              <label><input type="checkbox" name="especificacion" value="Bases"> Bases</label>
+              <label><input type="checkbox" name="especificacion" value="Articulado"> Articulado</label>
+              <label><input type="checkbox" name="especificacion" value="Cucharilla"> Cucharilla</label>
+              <label><input type="checkbox" name="especificacion" value="Mordida"> Mordida</label>
+              <label><input type="checkbox" name="especificacion" value="D. Maestro"> D. Maestro</label>
+              <label><input type="checkbox" name="especificacion" value="Mandar diseño"> Mandar diseño</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <section class="odontograma-section">
+          <h3>Odontograma</h3>
+          <p class="section-subtitle">Haz clic sobre las piezas dentales para agregarlas a la orden.</p>
+          <div class="odontograma-row">
+            <div class="odontograma-block">
+              <div class="odontograma-canvas">
+                <img src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/maxiwhite.png"
+                     id="maxilarImg"
+                     width="1100"
+                     height="1100"
+                     data-base-width="1100"
+                     data-base-height="1100"
+                     usemap="#mapMaxilar"
+                     alt="Odontograma maxilar"
+                     class="odontograma-img">
+                <svg id="labelOverlayMaxilar"
+                     class="tooth-label-overlay"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 1100 1100"
+                     preserveAspectRatio="xMidYMid meet"></svg>
+                <svg id="bridgeOverlayMaxilar"
+                     class="bridge-overlay"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 1100 1100"
+                     preserveAspectRatio="xMidYMid meet"></svg>
+                <svg id="bridgeDraftOverlayMaxilar" class="bridge-overlay" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+                <!-- overlay that will draw the highlight circles -->
+                <svg id="highlightOverlay"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 1100 1100"
+                     preserveAspectRatio="xMidYMid meet"
+                     style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:10;">
+                </svg>
+
+              </div>
+              <map name="mapMaxilar" id="mapMaxilar">
+                <area target="" alt="18" title="18" href="" coords="82,1019,68" shape="circle">
+                <area target="" alt="17" title="17" href="" coords="105,845,69" shape="circle">
+                <area target="" alt="16" title="16" href="" coords="143,671,83" shape="circle">
+                <area target="" alt="15" title="15" href="" coords="183,503,66" shape="circle">
+                <area target="" alt="14" title="14" href="" coords="229,370,64" shape="circle">
+                <area target="" alt="13" title="13" href="" coords="285,251,64" shape="circle">
+                <area target="" alt="12" title="12" href="" coords="352,147,53" shape="circle">
+                <area target="" alt="11" title="11" href="" coords="470,85,63" shape="circle">
+                <area target="" alt="21" title="21" href="" coords="643,87,65" shape="circle">
+                <area target="" alt="22" title="22" href="" coords="764,150,57" shape="circle">
+                <area target="" alt="23" title="23" href="" coords="830,252,61" shape="circle">
+                <area target="" alt="24" title="24" href="" coords="893,378,65" shape="circle">
+                <area target="" alt="25" title="25" href="" coords="937,505,64" shape="circle">
+                <area target="" alt="26" title="26" href="" coords="974,669,85" shape="circle">
+                <area target="" alt="27" title="27" href="" coords="1014,843,70" shape="circle">
+                <area target="" alt="28" title="28" href="" coords="1020,1018,69" shape="circle">
+              </map>
+            </div>
+            <div class="odontograma-block">
+              <div class="odontograma-block">
+  <div class="odontograma-canvas">
+    <img src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/mandiwhite.png"
+         id="mandibulaImg"
+         width="1100"
+         height="1100"
+         data-base-width="1100"
+         data-base-height="1100"
+         usemap="#mapMandibula"
+         alt="Odontograma mandíbula"
+         class="odontograma-img">
+    <svg id="labelOverlayMandibula"
+         class="tooth-label-overlay"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1100 1100"
+         preserveAspectRatio="xMidYMid meet"></svg>
+    <svg id="bridgeOverlayMandibula"
+         class="bridge-overlay"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1100 1100"
+         preserveAspectRatio="xMidYMid meet"></svg>
+    <svg id="bridgeDraftOverlayMandibula" class="bridge-overlay" xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+    <!-- overlay que dibuja los círculos -->
+    <svg id="highlightOverlayMandibula"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1100 1100"
+         preserveAspectRatio="xMidYMid meet"
+         style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:10;">
+    </svg>
+  </div>
+
+  <map name="mapMandibula" id="mapMandibula">
+    <area target="" alt="41" title="41" href="" coords="478,1034,48" shape="circle">
+    <area target="" alt="42" title="42" href="" coords="360,973,50" shape="circle">
+    <area target="" alt="43" title="43" href="" coords="275,872,55" shape="circle">
+    <area target="" alt="44" title="44" href="" coords="217,758,61" shape="circle">
+    <area target="" alt="45" title="45" href="" coords="181,627,59" shape="circle">
+    <area target="" alt="46" title="46" href="" coords="150,465,83" shape="circle">
+    <area target="" alt="47" title="47" href="" coords="113,284,77" shape="circle">
+    <area target="" alt="48" title="48" href="" coords="83,108,69" shape="circle">
+    <area target="" alt="31" title="31" href="" coords="616,1031,49" shape="circle">
+    <area target="" alt="32" title="32" href="" coords="731,969,50" shape="circle">
+    <area target="" alt="33" title="33" href="" coords="821,869,51" shape="circle">
+    <area target="" alt="34" title="34" href="" coords="877,760,55" shape="circle">
+    <area target="" alt="35" title="35" href="" coords="923,631,63" shape="circle">
+    <area target="" alt="36" title="36" href="" coords="963,466,83" shape="circle">
+    <area target="" alt="37" title="37" href="" coords="992,275,80" shape="circle">
+    <area target="" alt="38" title="38" href="" coords="1005,92,72" shape="circle">
+  </map>
+</div>
+
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="piezas" name="piezas">
+        </section>
+        <div class="odontograma-actions">
+          <p id="selectedTeethDisplay" class="selected-teeth-display">
+            Piezas seleccionadas: ninguna
+          </p>
+          <div class="odontograma-actions-row" id="modeRow">
+            <div class="mode-toggle" role="group" aria-label="Modo odontograma">
+              <span class="chip" id="modeSelectChip">Selección</span>
+              <label class="switch">
+                <input type="checkbox" id="bridgeModeToggle" aria-label="Cambiar a modo Puentes">
+                <span class="slider"></span>
+              </label>
+              <span class="chip" id="modeBridgeChip">Puentes</span>
+            </div>
+          </div>
+          <div class="bridge-draft-actions hidden" id="bridgeDraftActions">
+            <button type="button" class="btn confirm" id="confirmDraftBridgeBtn">Confirmar puente</button>
+            <button type="button" class="btn cancel" id="cancelDraftBridgeBtn">Cancelar</button>
+          </div>
+          <div id="bridgeList" class="bridge-list empty" aria-live="polite"></div>
+        </div>
+        <input type="hidden" id="colorGlobalInput" name="colorGlobal">
+        <input type="hidden" id="coloresPorDienteInput" name="coloresPorDiente">
+        <input type="hidden" id="coloresPorDientePlanoInput" name="coloresPorDientePlano">
+        <input type="hidden" id="puentesInput" name="puentes">
+        <input type="hidden" id="puentesPlanoInput" name="puentesPlano">
+        <input type="hidden" id="odontogramaJsonInput" name="odontogramaJson">
+      </section>
+
+      <section class="card vita-shade-card color-selection-card" aria-labelledby="vitaShadeTitle">
+        <div class="color-card-header">
+          <div>
+            <h2 class="section-title" id="vitaShadeTitle">Selección de color dental</h2>
+            <p class="section-subtitle">Elige un tono VITA para aplicarlo en el odontograma.</p>
+          </div>
+          <div class="color-mode-toggle" role="group" aria-label="Modo de asignación de color">
+            <span class="toggle-label">Color global</span>
+            <label class="switch switch-compact">
+              <input type="checkbox" id="assignPerToothToggle" aria-label="Asignar color por diente">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">Asignar por diente</span>
+          </div>
+        </div>
+        <div class="shade-summary">
+          <span class="shade-pill" id="globalShadeDisplay">Color global actual: —</span>
+          <span class="shade-pill" id="modeShadeDisplay">Modo activo: Color global</span>
+        </div>
+        <div>
+          <label for="terminado">Terminado</label>
+          <div class="switch-wrapper" id="terminadoWrapper">
+            <label class="switch">
+              <input type="checkbox" id="terminado" name="terminado">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="vita-shade-grid" id="vitaShadeGrid" role="grid" aria-describedby="vitaShadeTitle"></div>
+        <div class="shade-details" id="perToothShadeDisplay">Sin asignaciones individuales.</div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Costos y notas</h2>
+        <div class="cost-grid">
+          <div>
+            <label for="costo">Costo *</label>
+            <div class="input-with-symbol">
+              <span>$</span>
+              <input type="number" id="costo" name="costo" min="0" step="0.01" placeholder="0.00" required>
+            </div>
+          </div>
+          <div>
+            <label for="aCuenta">A cuenta</label>
+            <div class="input-with-symbol">
+              <span>$</span>
+              <input type="number" id="aCuenta" name="aCuenta" min="0" step="0.01" placeholder="0.00" value="0.00">
+            </div>
+            <p id="balanceWarning" class="inline-warning hidden"><span aria-hidden="true">⚠</span>A cuenta no puede superar el costo.</p>
+          </div>
+        </div>
+        <div class="total-display">
+          <span>Total</span>
+          <strong id="displayTotal">$0.00</strong>
+          <input type="hidden" id="totalCalculado" name="totalCalculado" value="0">
+        </div>
+        <div class="grid grid-2 form-notes" style="margin-top: 16px;">
+          <div>
+            <label for="garantiaSwitch">Garantía</label>
+            <div class="switch-wrapper" id="garantia">
+              <label class="switch">
+                <input type="checkbox" id="garantiaSwitch" name="garantia" value="Sí">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label for="notas">Notas</label>
+            <textarea id="notas" name="notas" placeholder="Especificaciones adicionales, recordatorios, etc."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <div class="buttons">
+        <button type="reset" class="secondary">Limpiar formulario</button>
+        <button type="submit" class="primary" id="btn-guardar">Guardar orden</button>
+      </div>
+    </form>
+
+    <footer class="app-footer">
+      <img src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/logowhite.png" alt="Spiral Development Group Logo" class="footer-logo">
+      <p>Spiral Development Group © 2025 <span style="color:#888; font-weight:500;">· v1.5 (Beta)</span></p>
+    </footer>
+  </div>
+
+  <script>
+    const DEBUG = false;
+    const vitaShades = [
+      { code: "A1", color: "#f8e6d0" },
+      { code: "A2", color: "#f1d3b5" },
+      { code: "A3", color: "#e5c199" },
+      { code: "A3.5", color: "#d8a97e" },
+      { code: "A4", color: "#c8966a" },
+      { code: "B1", color: "#f7e9d5" },
+      { code: "B2", color: "#eed6b8" },
+      { code: "B3", color: "#e4c49c" },
+      { code: "B4", color: "#d3ab79" },
+      { code: "C1", color: "#f3e4cf" },
+      { code: "C2", color: "#e7d0b2" },
+      { code: "C3", color: "#dcbf98" },
+      { code: "C4", color: "#c7a87b" },
+      { code: "D2", color: "#ead5bb" },
+      { code: "D3", color: "#dec29f" },
+      { code: "D4", color: "#caaa7b" }
+    ];
+
+    const TOOTH_ORDER = [
+      '11','12','13','14','15','16','17','18',
+      '21','22','23','24','25','26','27','28',
+      '31','32','33','34','35','36','37','38',
+      '41','42','43','44','45','46','47','48'
+    ];
+    const ORIGINAL_CIRCLE_COORDS_MAX = new Map();
+    const ORIGINAL_CIRCLE_COORDS_MAN = new Map();
+    const TOOTH_COORDINATES = new Map();
+    const SHADE_COLOR_MAP = new Map(vitaShades.map(shade => [shade.code, shade.color]));
+    const SHADE_DEFAULT_FALLBACK = vitaShades[0]?.code || 'A2';
+    const DEFAULT_SHADE_CODE = SHADE_COLOR_MAP.has('A2') ? 'A2' : SHADE_DEFAULT_FALLBACK;
+    let selectedShadeCode = DEFAULT_SHADE_CODE;
+    let colorGlobalSelection = DEFAULT_SHADE_CODE;
+    let assignShadeByTooth = false;
+    const toothShadeAssignments = new Map();
+    const puentesData = [];
+    let odontogramaMode = 'select'; // 'select' | 'bridge'
+    const draftBridgeMax = [];
+    const draftBridgeMan = [];
+
+    function getDraftListForArch(arch){ return arch==='maxilar'?draftBridgeMax:draftBridgeMan; }
+    function clearDraft(arch){ const a=getDraftListForArch(arch); a.length=0; redrawDraftOverlay(arch); }
+    function setMode(newMode){
+      odontogramaMode = newMode==='bridge' ? 'bridge':'select';
+      const t=document.getElementById('bridgeModeToggle');
+      const a=document.getElementById('bridgeDraftActions');
+      const s=document.getElementById('modeSelectChip');
+      const b=document.getElementById('modeBridgeChip');
+      if(t) t.checked = odontogramaMode==='bridge';
+      if(a) a.classList.toggle('hidden', odontogramaMode!=='bridge');
+      if(s) s.classList.toggle('active', odontogramaMode==='select');
+      if(b) b.classList.toggle('active', odontogramaMode==='bridge');
+    }
+
+
+    function getSelectedTeeth() {
+      const piezasInput = document.getElementById('piezas');
+      if (!piezasInput || !piezasInput.value) return [];
+      return piezasInput.value
+        .split(',')
+        .map(value => value.trim())
+        .filter(Boolean);
+    }
+
+    function setSelectedTeeth(teeth) {
+      const piezasInput = document.getElementById('piezas');
+      if (!piezasInput) return;
+      piezasInput.value = teeth.join(',');
+    }
+
+    function getArchFromTooth(tooth) {
+      if (!tooth) return null;
+      const quadrant = String(tooth).trim().charAt(0);
+      if (quadrant === '1' || quadrant === '2') return 'maxilar';
+      if (quadrant === '3' || quadrant === '4') return 'mandibula';
+      return null;
+    }
+
+    function getShadeHex(code) {
+      if (!code) return null;
+      const normalized = String(code).trim();
+      return SHADE_COLOR_MAP.get(normalized) || null;
+    }
+
+    function hexToRgb(hex) {
+      if (!hex) return null;
+      let clean = hex.trim().replace('#', '');
+      if (clean.length === 3) {
+        clean = clean.split('').map(char => char + char).join('');
+      }
+      if (clean.length !== 6) return null;
+      const r = parseInt(clean.slice(0, 2), 16);
+      const g = parseInt(clean.slice(2, 4), 16);
+      const b = parseInt(clean.slice(4, 6), 16);
+      if ([r, g, b].some(value => Number.isNaN(value))) return null;
+      return { r, g, b };
+    }
+
+    function hexToRgba(hex, alpha) {
+      const rgb = hexToRgb(hex);
+      if (!rgb) return 'rgba(74, 144, 226, 0.35)';
+      const clampedAlpha = typeof alpha === 'number' ? Math.min(Math.max(alpha, 0), 1) : 1;
+      return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${clampedAlpha})`;
+    }
+
+    function adjustColor(hex, amount) {
+      const rgb = hexToRgb(hex);
+      if (!rgb) return '#4a90e2';
+      const clamp = value => Math.max(0, Math.min(255, value));
+      const r = clamp(rgb.r + amount);
+      const g = clamp(rgb.g + amount);
+      const b = clamp(rgb.b + amount);
+      return `#${[r, g, b].map(value => value.toString(16).padStart(2, '0')).join('')}`;
+    }
+
+    function getCircleColorsForShade(code) {
+      const baseHex = getShadeHex(code) || '#4a90e2';
+      return {
+        fill: hexToRgba(baseHex, 0.38),
+        stroke: adjustColor(baseHex, -35)
+      };
+    }
+
+    function getEffectiveShadeForTooth(tooth) {
+      if (toothShadeAssignments.has(tooth)) {
+        return toothShadeAssignments.get(tooth);
+      }
+      return colorGlobalSelection || DEFAULT_SHADE_CODE;
+    }
+
+    function assignShadeToTooth(tooth, shadeCode) {
+      if (!tooth || !shadeCode) return;
+      toothShadeAssignments.set(tooth, shadeCode);
+    }
+
+    function removeShadeFromTooth(tooth) {
+      if (!tooth) return;
+      toothShadeAssignments.delete(tooth);
+    }
+
+    function getToothShadeAssignmentsObject() {
+      const selectedSet = new Set(getSelectedTeeth());
+      const entries = Array.from(toothShadeAssignments.entries())
+        .filter(([tooth, shade]) => tooth && shade && selectedSet.has(tooth))
+        .sort((a, b) => {
+          const ia = TOOTH_ORDER.indexOf(a[0]);
+          const ib = TOOTH_ORDER.indexOf(b[0]);
+          return ia - ib;
+        });
+      return entries.reduce((acc, [tooth, shade]) => {
+        acc[tooth] = shade;
+        return acc;
+      }, {});
+    }
+
+    function getBridgesDataClone() {
+      return puentesData.map(bridge => ({
+        dientes: Array.isArray(bridge.dientes) ? bridge.dientes.slice() : [],
+        color: bridge.color
+      }));
+    }
+
+    function highlightSelectedShadeButton() {
+      document.querySelectorAll('.shade-button, .shade-btn').forEach(button => {
+        if (!button || !button.dataset) return;
+        const isActive = button.dataset.shadeCode === selectedShadeCode;
+        button.classList.toggle('shade-button--active', isActive); // legacy class (safe)
+        button.classList.toggle('active', isActive);               // new class for the redesigned buttons
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
+    function updateShadeSummaryUI() {
+      const globalDisplay = document.getElementById('globalShadeDisplay');
+      if (globalDisplay) {
+        globalDisplay.textContent = `Color global actual: ${colorGlobalSelection || '—'}`;
+      }
+
+      const modeDisplay = document.getElementById('modeShadeDisplay');
+      if (modeDisplay) {
+        modeDisplay.textContent = assignShadeByTooth
+          ? 'Modo activo: Asignación por diente'
+          : 'Modo activo: Color global';
+      }
+
+      const perToothDisplay = document.getElementById('perToothShadeDisplay');
+      if (perToothDisplay) {
+        const assignments = getToothShadeAssignmentsObject();
+        const entries = Object.entries(assignments);
+        if (!entries.length) {
+          perToothDisplay.textContent = 'Sin asignaciones individuales.';
+        } else {
+          perToothDisplay.innerHTML = '';
+          const strong = document.createElement('strong');
+          strong.textContent = 'Asignaciones por diente:';
+          perToothDisplay.appendChild(strong);
+          const text = document.createElement('span');
+          text.textContent = ` ${entries.map(([tooth, shade]) => `${tooth}:${shade}`).join(', ')}`;
+          perToothDisplay.appendChild(text);
+        }
+      }
+
+      highlightSelectedShadeButton();
+    }
+
+    function setAssignShadeByTooth(value) {
+      assignShadeByTooth = Boolean(value);
+      updateShadeSummaryUI();
+    }
+
+    function handleShadeSelection(code) {
+      if (!code) return;
+      selectedShadeCode = code;
+      if (!assignShadeByTooth) {
+        colorGlobalSelection = code;
+      }
+      updateShadeSummaryUI();
+      document.querySelectorAll('.shade-button').forEach(btn => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.shadeCode === selectedShadeCode));
+      });
+      redrawOverlay();
+      updateOdontogramaHiddenFields();
+    }
+
+    function updateSelectedTeethDisplay() {
+      const displayEl = document.getElementById('selectedTeethDisplay');
+      if (!displayEl) return;
+      const teeth = getSelectedTeeth();
+      if (!teeth.length) {
+        displayEl.textContent = 'Piezas seleccionadas: ninguna';
+      } else {
+        displayEl.textContent = `Piezas seleccionadas: ${teeth.join(', ')}`;
+      }
+    }
+
+    function sortTeeth(teeth) {
+      return teeth
+        .slice()
+        .sort((a, b) => {
+          const ia = TOOTH_ORDER.indexOf(a);
+          const ib = TOOTH_ORDER.indexOf(b);
+          if (ia === -1 && ib === -1) return a.localeCompare(b, 'es');
+          if (ia === -1) return 1;
+          if (ib === -1) return -1;
+          return ia - ib;
+        });
+    }
+
+    function syncToothSelection() {
+      const selectedSet = new Set(getSelectedTeeth());
+      ['#mapMaxilar', '#mapMandibula'].forEach(mapSelector => {
+        const map = document.querySelector(mapSelector);
+        if (!map) return;
+
+        map.querySelectorAll('area').forEach(area => {
+          const tooth = (area.getAttribute('alt') || area.getAttribute('title') || area.dataset.tooth || '').trim();
+          if (!tooth) return;
+          if (selectedSet.has(tooth)) {
+            area.dataset.selected = 'true';
+          } else {
+            area.removeAttribute('data-selected');
+          }
+        });
+      });
+    }
+
+    function renderToothLabels(mapSelector, overlayId, coordMap) {
+      const map = document.querySelector(mapSelector);
+      const overlay = document.getElementById(overlayId);
+      if (!map || !overlay || !coordMap) return;
+      overlay.innerHTML = '';
+
+      map.querySelectorAll('area').forEach(area => {
+        const tooth = (area.getAttribute('alt') || area.getAttribute('title') || '').trim();
+        if (!tooth) return;
+        const coords = coordMap.get(area);
+        if (!coords) return;
+        const { cx, cy, r } = coords;
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', cx);
+        text.setAttribute('y', cy);
+        const fontSize = Math.max(18, Math.min(38, r * 0.6));
+        text.setAttribute('font-size', fontSize);
+        text.textContent = tooth;
+        overlay.appendChild(text);
+      });
+    }
+
+    function drawSelectedCirclesFromMap(mapSelector, overlayId, coordMap) {
+      const map = document.querySelector(mapSelector);
+      const overlay = document.getElementById(overlayId);
+      if (!map || !overlay || !coordMap) return;
+      overlay.innerHTML = '';
+      const selected = new Set(getSelectedTeeth());
+
+      map.querySelectorAll('area').forEach(area => {
+        const tooth = (area.getAttribute('alt') || area.getAttribute('title') || '').trim();
+        if (!tooth || !selected.has(tooth)) return;
+
+        const circleData = coordMap.get(area);
+        if (!circleData) return;
+
+        const { cx, cy, r } = circleData;
+        const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const shadeCode = getEffectiveShadeForTooth(tooth);
+        const colors = getCircleColorsForShade(shadeCode);
+        const strokeWidth = Math.max(3, Math.round(r * 0.18));
+        circ.setAttribute('cx', cx);
+        circ.setAttribute('cy', cy);
+        circ.setAttribute('r', r);
+        circ.setAttribute('fill', colors.fill);
+        circ.setAttribute('stroke', colors.stroke);
+        circ.setAttribute('stroke-width', strokeWidth);
+        circ.setAttribute('data-tooth', tooth);
+        circ.setAttribute('data-shade', shadeCode || '');
+        overlay.appendChild(circ);
+      });
+    }
+
+    function redrawOverlay() {
+      drawSelectedCirclesFromMap('#mapMaxilar', 'highlightOverlay', ORIGINAL_CIRCLE_COORDS_MAX);
+      drawSelectedCirclesFromMap('#mapMandibula', 'highlightOverlayMandibula', ORIGINAL_CIRCLE_COORDS_MAN);
+      redrawBridgeOverlay();
+    }
+
+    function selectTooth(num) {
+      const piezasInput = document.getElementById('piezas');
+      if (!piezasInput) return false;
+
+      const selected = getSelectedTeeth();
+      const wasSelected = selected.includes(num);
+      const idx = selected.indexOf(num);
+      if (idx > -1) {
+        selected.splice(idx, 1);
+      } else {
+        selected.push(num);
+      }
+
+      const uniqueSelected = Array.from(new Set(selected));
+      const sortedSelected = sortTeeth(uniqueSelected);
+      setSelectedTeeth(sortedSelected);
+      const stillSelected = sortedSelected.includes(num);
+
+      if (assignShadeByTooth && stillSelected) {
+        const shadeToAssign = selectedShadeCode || colorGlobalSelection || DEFAULT_SHADE_CODE;
+        assignShadeToTooth(num, shadeToAssign);
+      } else if (!stillSelected && wasSelected) {
+        removeShadeFromTooth(num);
+      }
+      syncToothSelection();
+
+      redrawOverlay();
+      updateSelectedTeethDisplay();
+      updateShadeSummaryUI();
+      updateOdontogramaHiddenFields();
+
+      return false;
+    }
+
+    function handleToothClick(tooth){
+      if(!tooth) return;
+      const arch = getArchFromTooth(tooth);
+      if(!arch) return;
+      if(odontogramaMode==='bridge'){
+        const mine = getDraftListForArch(arch);
+        const other= getDraftListForArch(arch==='maxilar'?'mandibula':'maxilar');
+        if(other.length){ other.length=0; redrawDraftOverlay(arch==='maxilar'?'mandibula':'maxilar'); }
+        if(!mine.includes(tooth)) mine.push(tooth);
+        redrawDraftOverlay(arch);
+        return; // don't toggle selection in bridge mode
+      }
+      // normal selection mode
+      selectTooth(tooth);
+    }
+
+    function makeImageMapResponsive(imgSelector, mapSelector, coordMap, arch) {
+      const img = document.querySelector(imgSelector);
+      const map = document.querySelector(mapSelector);
+      if (!img || !map || !coordMap) return;
+
+      const baseWidth = parseFloat(img.dataset.baseWidth || img.getAttribute('width') || img.naturalWidth || 0);
+      const baseHeight = parseFloat(img.dataset.baseHeight || img.getAttribute('height') || img.naturalHeight || 0);
+      if (!baseWidth || !baseHeight) return;
+
+      coordMap.clear();
+
+      map.querySelectorAll('area').forEach(area => {
+        let rawCoords = area.dataset.coordsOriginal;
+        if (!rawCoords) {
+          rawCoords = area.getAttribute('coords') || '';
+          if (!rawCoords) return;
+          area.dataset.coordsOriginal = rawCoords;
+        }
+
+        const numericCoords = rawCoords
+          .split(',')
+          .map(value => parseFloat(value.trim()))
+          .filter(n => !Number.isNaN(n));
+
+        if (numericCoords.length < 3) return;
+
+        const [x, y, r] = numericCoords;
+        coordMap.set(area, { cx: x, cy: y, r });
+        const tooth = (area.getAttribute('alt') || area.getAttribute('title') || '').trim();
+        if (tooth) {
+          TOOTH_COORDINATES.set(tooth, { cx: x, cy: y, r, arch });
+        }
+      });
+
+      const applyResponsiveCoords = () => {
+        const rect = img.getBoundingClientRect();
+        const currentWidth = rect.width || img.clientWidth || baseWidth;
+        const currentHeight = rect.height || img.clientHeight || baseHeight;
+        if (!currentWidth || !currentHeight) return;
+
+        const scaleX = currentWidth / baseWidth;
+        const scaleY = currentHeight / baseHeight;
+        const radiusScale = Math.max(scaleX, scaleY);
+
+        map.querySelectorAll('area').forEach(area => {
+          const original = coordMap.get(area);
+          if (!original) return;
+
+          const scaledX = Math.round(original.cx * scaleX);
+          const scaledY = Math.round(original.cy * scaleY);
+          const scaledR = Math.round(original.r * radiusScale);
+
+          area.setAttribute('coords', `${scaledX},${scaledY},${scaledR}`);
+        });
+      };
+
+      const handleLoad = () => {
+        applyResponsiveCoords();
+        syncToothSelection();
+        redrawOverlay();
+        updateSelectedTeethDisplay();
+        renderToothLabels(mapSelector, arch === 'maxilar' ? 'labelOverlayMaxilar' : 'labelOverlayMandibula', coordMap);
+      };
+
+      if (img.complete && img.naturalWidth) {
+        handleLoad();
+      } else {
+        img.addEventListener('load', handleLoad, { once: true });
+      }
+
+      window.addEventListener('resize', () => {
+        applyResponsiveCoords();
+        redrawOverlay();
+      });
+    }
+
+    function arraysEqual(a, b) {
+      if (!Array.isArray(a) || !Array.isArray(b)) return false;
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
+    function drawRedBridge(svg, points){
+      if(!svg || points.length<2) return;
+      const d = points.map((p,i)=>(i?'L':'M')+p.cx+','+p.cy).join(' ');
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d', d); path.setAttribute('class','bridge-path');
+      const avgR = points.reduce((a,p)=>a+(p.r||10),0)/points.length;
+      path.setAttribute('stroke-width', Math.max(6, Math.min(16, avgR*0.42)));
+      svg.appendChild(path);
+      points.forEach(p=>{
+        const nodeR = Math.max(11, Math.min(20, (p.r||16)*0.38));
+        const fs    = Math.max(12, Math.min(18, nodeR*0.95));
+        const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('cx',p.cx); c.setAttribute('cy',p.cy); c.setAttribute('r',nodeR);
+        c.setAttribute('class','bridge-node'); svg.appendChild(c);
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('x',p.cx); t.setAttribute('y',p.cy);
+        t.setAttribute('class','bridge-node-label'); t.setAttribute('font-size',fs);
+        t.textContent = p.tooth; svg.appendChild(t);
+      });
+    }
+
+    function renderBridgeOverlayForArch(arch){
+      const overlayId = arch==='maxilar' ? 'bridgeOverlayMaxilar':'bridgeOverlayMandibula';
+      const svg = document.getElementById(overlayId);
+      if(!svg) return; svg.innerHTML='';
+      puentesData.forEach(bridge=>{
+        const dientes = Array.isArray(bridge?.dientes)?bridge.dientes:[];
+        if(dientes.length<2) return;
+        if(!dientes.every(t=>getArchFromTooth(t)===arch)) return;
+        const pts = dientes.map(tooth=>{
+          const c = TOOTH_COORDINATES.get(tooth);
+          return c && c.arch===arch ? {cx:c.cx, cy:c.cy, r:c.r, tooth}: null;
+        }).filter(Boolean);
+        if(pts.length>=2) drawRedBridge(svg, pts);
+      });
+    }
+
+    function redrawBridgeOverlay() {
+      renderBridgeOverlayForArch('maxilar');
+      renderBridgeOverlayForArch('mandibula');
+    }
+
+    function redrawDraftOverlay(arch){
+      const overlayId = arch==='maxilar' ? 'bridgeDraftOverlayMaxilar':'bridgeDraftOverlayMandibula';
+      const svg = document.getElementById(overlayId);
+      if(!svg) return; svg.innerHTML='';
+      const list = getDraftListForArch(arch);
+      const pts = list.map(tooth=>{
+        const c = TOOTH_COORDINATES.get(tooth);
+        return c && c.arch===arch ? {cx:c.cx, cy:c.cy, r:c.r, tooth}: null;
+      }).filter(Boolean);
+      if(pts.length) drawRedBridge(svg, pts);
+    }
+
+    function addBridge(teeth, shadeCode) {
+      if (!Array.isArray(teeth) || teeth.length < 2) return;
+      const normalizedTeeth = sortTeeth(Array.from(new Set(teeth)));
+      if (normalizedTeeth.length < 2) return;
+      const arch = getArchFromTooth(normalizedTeeth[0]);
+      if (!arch) return;
+      if (!normalizedTeeth.every(tooth => getArchFromTooth(tooth) === arch)) return;
+
+      const color = shadeCode || colorGlobalSelection || DEFAULT_SHADE_CODE;
+      const existingIndex = puentesData.findIndex(p => arraysEqual(p.dientes, normalizedTeeth));
+      if (existingIndex > -1) {
+        puentesData[existingIndex].color = color;
+      } else {
+        puentesData.push({ dientes: normalizedTeeth, color });
+      }
+      renderBridgeList();
+      redrawBridgeOverlay();
+      updateOdontogramaHiddenFields();
+    }
+
+    function removeBridge(index) {
+      if (index < 0 || index >= puentesData.length) return;
+      puentesData.splice(index, 1);
+      renderBridgeList();
+      redrawBridgeOverlay();
+      updateOdontogramaHiddenFields();
+    }
+
+    function renderBridgeList() {
+      const listEl = document.getElementById('bridgeList');
+      if (!listEl) return;
+      listEl.innerHTML = '';
+      if (!puentesData.length) {
+        listEl.classList.add('empty');
+        return;
+      }
+      listEl.classList.remove('empty');
+
+      puentesData.forEach((bridge, index) => {
+        const item = document.createElement('div');
+        item.className = 'bridge-item';
+
+        const info = document.createElement('div');
+        info.className = 'bridge-info';
+        const swatch = document.createElement('span');
+        swatch.className = 'bridge-swatch';
+        const swatchColor = getShadeHex(bridge.color) || getShadeHex(colorGlobalSelection) || '#f1d3b5';
+        swatch.style.background = swatchColor;
+        info.appendChild(swatch);
+
+        const label = document.createElement('strong');
+        label.textContent = `Puente ${index + 1}:`;
+        info.appendChild(label);
+
+        const detail = document.createElement('span');
+        detail.textContent = `${bridge.dientes.join(' - ')} · ${bridge.color || '—'}`;
+        info.appendChild(detail);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'bridge-remove';
+        removeBtn.textContent = 'Eliminar';
+        removeBtn.addEventListener('click', () => removeBridge(index));
+
+        item.append(info, removeBtn);
+        listEl.appendChild(item);
+      });
+    }
+
+    function updateOdontogramaHiddenFields() {
+      const colorGlobalInput = document.getElementById('colorGlobalInput');
+      if (colorGlobalInput) {
+        colorGlobalInput.value = colorGlobalSelection || '';
+      }
+
+      const perToothAssignments = getToothShadeAssignmentsObject();
+      const perToothJsonInput = document.getElementById('coloresPorDienteInput');
+      if (perToothJsonInput) {
+        perToothJsonInput.value = JSON.stringify(perToothAssignments);
+      }
+
+      const perToothFlatInput = document.getElementById('coloresPorDientePlanoInput');
+      if (perToothFlatInput) {
+        const entries = Object.entries(perToothAssignments);
+        perToothFlatInput.value = entries.length
+          ? entries.map(([tooth, shade]) => `${tooth}:${shade}`).join(', ')
+          : '';
+      }
+
+      const bridgesClone = getBridgesDataClone();
+      const bridgesJsonInput = document.getElementById('puentesInput');
+      if (bridgesJsonInput) {
+        bridgesJsonInput.value = JSON.stringify(bridgesClone);
+      }
+
+      const bridgesFlatInput = document.getElementById('puentesPlanoInput');
+      if (bridgesFlatInput) {
+        bridgesFlatInput.value = bridgesClone.length
+          ? bridgesClone.map(bridge => `${bridge.dientes.join('-')}:${bridge.color || ''}`).join(', ')
+          : '';
+      }
+
+      const odontogramaJsonInput = document.getElementById('odontogramaJsonInput');
+      if (odontogramaJsonInput) {
+        const patientField = document.getElementById('pacienteInput');
+        const notesField = document.getElementById('notas');
+        const odontogramaData = {
+          paciente: patientField ? patientField.value.trim() : '',
+          colorGlobal: colorGlobalSelection || '',
+          coloresPorDiente: perToothAssignments,
+          puentes: bridgesClone,
+          notas: notesField ? notesField.value.trim() : ''
+        };
+        odontogramaJsonInput.value = JSON.stringify(odontogramaData);
+      }
+    }
+
+    (function () {
+      const searchInput = document.getElementById('doctorSearch');
+      const hintsContainer = document.getElementById('doctorHints');
+      const doctorNameInput = document.getElementById('doctorNombre');
+      const doctorTelInput = document.getElementById('doctorTel');
+      const dentistFirstInput = document.getElementById('dentistNombre');
+      const dentistLastInput = document.getElementById('dentistApellido');
+      const dentistPhoneInput = document.getElementById('dentistNumero');
+
+      if (!searchInput || !hintsContainer) return;
+
+      const MENU_ID = 'doctor-hints-menu';
+      let itemsCache = [];
+      let activeIndex = -1;
+      let debounceTimer = null;
+
+      hintsContainer.style.display = 'none';
+      hintsContainer.classList.remove('open');
+      hintsContainer.setAttribute('role', 'presentation');
+      searchInput.setAttribute('role', 'combobox');
+      searchInput.setAttribute('aria-autocomplete', 'list');
+      searchInput.setAttribute('aria-expanded', 'false');
+
+      function esc(str) {
+        const MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
+        MAP['"'] = '&quot;';
+        MAP["'"] = '&#39;';
+        return String(str || '').replace(/[&<>"']/g, function (c) {
+          return MAP[c] || c;
+        });
+      }
+
+      function clearMenu() {
+        hintsContainer.innerHTML = '';
+        hintsContainer.style.display = 'none';
+        hintsContainer.classList.remove('open');
+        searchInput.setAttribute('aria-expanded', 'false');
+        searchInput.removeAttribute('aria-activedescendant');
+        itemsCache = [];
+        activeIndex = -1;
+      }
+
+      function setActive(index, menuEl) {
+        const nodes = Array.from(menuEl.querySelectorAll('.hint-item'));
+        nodes.forEach(node => node.removeAttribute('aria-selected'));
+
+        if (index >= 0 && index < nodes.length) {
+          const node = nodes[index];
+          node.setAttribute('aria-selected', 'true');
+          activeIndex = index;
+          searchInput.setAttribute('aria-activedescendant', node.id || '');
+
+          const itemRect = node.getBoundingClientRect();
+          const menuRect = menuEl.getBoundingClientRect();
+          if (itemRect.bottom > menuRect.bottom) node.scrollIntoView(false);
+          if (itemRect.top < menuRect.top) node.scrollIntoView();
+        } else {
+          activeIndex = -1;
+          searchInput.removeAttribute('aria-activedescendant');
+        }
+      }
+
+      function pickItem(item) {
+        const fullName = (item && item.nombre ? String(item.nombre) : '').trim();
+        const phone = (item && item.tel ? String(item.tel) : '').trim();
+
+        const parts = fullName.split(/\s+/);
+        const first = parts.shift() || '';
+        const last = parts.join(' ');
+
+        if (dentistFirstInput) dentistFirstInput.value = first;
+        if (dentistLastInput) dentistLastInput.value = last;
+        if (dentistPhoneInput) dentistPhoneInput.value = phone;
+
+        if (doctorNameInput && !doctorNameInput.value) doctorNameInput.value = fullName;
+        if (doctorTelInput && !doctorTelInput.value && phone) doctorTelInput.value = phone;
+
+        searchInput.value = fullName;
+        clearMenu();
+      }
+
+      function renderMenu(items) {
+        itemsCache = Array.isArray(items) ? items : [];
+        if (!itemsCache.length) {
+          clearMenu();
+          return;
+        }
+
+        const menu = document.createElement('div');
+        menu.className = 'hint-menu';
+        menu.id = MENU_ID;
+        menu.setAttribute('role', 'listbox');
+
+        itemsCache.forEach(function (item, index) {
+          const option = document.createElement('div');
+          option.className = 'hint-item';
+          option.id = `${MENU_ID}-item-${index}`;
+          option.setAttribute('role', 'option');
+          option.setAttribute('data-index', index);
+          option.innerHTML =
+            '<div class="hint-name">' + esc(item && item.nombre || '') + '</div>' +
+            '<div class="hint-meta">' + (item && item.tel ? 'Tel: ' + esc(item.tel) : '&nbsp;') + '</div>';
+
+          option.addEventListener('mouseenter', function () { setActive(index, menu); });
+          option.addEventListener('mousedown', function (evt) {
+            evt.preventDefault();
+            pickItem(item);
+          });
+
+          menu.appendChild(option);
+        });
+
+        hintsContainer.innerHTML = '';
+        hintsContainer.appendChild(menu);
+        hintsContainer.style.display = 'block';
+        hintsContainer.classList.add('open');
+        searchInput.setAttribute('aria-controls', MENU_ID);
+        searchInput.setAttribute('aria-expanded', 'true');
+        activeIndex = -1;
+      }
+
+      function triggerSearch(query) {
+        if (!query || query.length < 2) {
+          clearMenu();
+          return;
+        }
+
+        const runner = (typeof google !== 'undefined' && google.script && google.script.run)
+          ? google.script.run
+          : null;
+
+        if (!runner) {
+          clearMenu();
+          if (DEBUG) console.warn('google.script.run no disponible para búsqueda de doctores');
+          return;
+        }
+
+        runner.withSuccessHandler(renderMenu).apiSearchAgenda('doctor', query, 8);
+      }
+
+      searchInput.addEventListener('input', function () {
+        const q = searchInput.value.trim();
+        clearTimeout(debounceTimer);
+        if (q.length < 2) {
+          clearMenu();
+          return;
+        }
+        debounceTimer = setTimeout(function () {
+          triggerSearch(q);
+        }, 160);
+      });
+
+      searchInput.addEventListener('blur', function () {
+        setTimeout(clearMenu, 150);
+      });
+
+      searchInput.addEventListener('keydown', function (event) {
+        const menu = hintsContainer.querySelector('.hint-menu');
+        if (!menu || !itemsCache.length) {
+          if (event.key === 'Escape') clearMenu();
+          return;
+        }
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setActive(Math.min(activeIndex + 1, itemsCache.length - 1), menu);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setActive(Math.max(activeIndex - 1, 0), menu);
+        } else if (event.key === 'Enter') {
+          if (activeIndex >= 0 && activeIndex < itemsCache.length) {
+            event.preventDefault();
+            pickItem(itemsCache[activeIndex]);
+          }
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          clearMenu();
+        }
+      });
+    })();
+
+(function(){
+  var $name = document.getElementById('doctorNombre');
+  var $tel = document.getElementById('doctorTel');
+  var $btn = document.getElementById('btnAddDoctor');
+  if (!$name || !$btn) return;
+
+  $btn.addEventListener('click', function(){
+    var nombre = ($name.value || '').trim();
+    var tel    = ($tel && $tel.value ? $tel.value.trim() : '');
+    if (!nombre) { alert('Escribe el nombre del doctor'); return; }
+    $btn.disabled = true;
+    google.script.run
+      .withSuccessHandler(function(res){
+        $btn.disabled = false;
+        alert('Doctor ' + (res && res.nombre ? res.nombre : nombre) + ' guardado en el directorio.');
+      })
+      .withFailureHandler(function(err){
+        $btn.disabled = false;
+        alert('No se pudo guardar el doctor: ' + (err && err.message || err));
+      })
+      .apiAddDoctor(nombre, tel);
+  });
+})();
+    (function () {
+      let piezasInput;
+      let totalInput;
+      let totalDisplay;
+      let costoField;
+      let aCuentaField;
+      let warningEl;
+      let feedbackEl;
+      let feedbackIcon;
+      let feedbackText;
+      let successCardEl;
+      let successCardMessageEl;
+      let successCardCloseBtn;
+      let successCardAutoHideTimeoutId = null;
+      let fechaRequeridaInput;
+      let urgenteSelect;
+      let form;
+      let assignPerToothToggle;
+      let pacienteInputEl;
+      let notesField;
+
+      const ALL_CHECKBOX_GROUPS = ['material', 'especificacion', 'tipoTrabajo', 'garantia'];
+      const SUCCESS_CARD_VISIBLE_CLASS = 'success-card-visible';
+
+      function renderVitaShadeGuide() {
+        const grid = document.getElementById('vitaShadeGrid');
+        if (!grid || !Array.isArray(vitaShades)) return;
+
+        // Ensure defaults exist
+        if (!SHADE_COLOR_MAP.has(selectedShadeCode) && vitaShades.length) {
+          selectedShadeCode = vitaShades[0].code;
+        }
+        if (!SHADE_COLOR_MAP.has(colorGlobalSelection) && vitaShades.length) {
+          colorGlobalSelection = vitaShades[0].code;
+        }
+
+        // Group by family letter (A/B/C/D) keeping your order
+        const order = ['A', 'B', 'C', 'D'];
+        const groups = { A: [], B: [], C: [], D: [] };
+        vitaShades.forEach(s => {
+          if (!s || !s.code) return;
+          const fam = String(s.code).trim().charAt(0).toUpperCase();
+          if (groups[fam]) groups[fam].push(s);
+        });
+        // sort codes inside each family by natural order (A1, A2, A3, A3.5, A4)
+        const parseKey = c => {
+          const m = String(c).match(/^([A-D])(\d(?:\.\d)?)$/i);
+          return m ? parseFloat(m[2]) : Number.MAX_VALUE;
+        };
+        Object.keys(groups).forEach(k => groups[k].sort((a, b) => parseKey(a.code) - parseKey(b.code)));
+
+        // Build DOM
+        grid.classList.add('vita-palette');
+        grid.innerHTML = '';
+        order.forEach(fam => {
+          if (!groups[fam] || !groups[fam].length) return;
+          const row = document.createElement('div');
+          row.className = 'vita-row';
+          const title = document.createElement('div');
+          title.className = 'row-title';
+          title.textContent = fam;
+          const sw = document.createElement('div');
+          sw.className = 'row-swatches';
+
+          groups[fam].forEach(shade => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'shade-btn shade-button'; // keep old selector "shade-button" for compatibility
+            btn.dataset.shadeCode = shade.code;
+            btn.setAttribute('aria-label', `Tono ${shade.code}`);
+            btn.setAttribute('role', 'button');
+            btn.setAttribute('tabindex', '0');
+            btn.setAttribute('aria-pressed', String(shade.code === selectedShadeCode));
+
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            dot.style.setProperty('--shade-color', shade.color || '#ccc');
+
+            const code = document.createElement('span');
+            code.className = 'code';
+            code.textContent = shade.code;
+
+            btn.append(dot, code);
+            btn.addEventListener('click', () => handleShadeSelection(shade.code));
+            sw.appendChild(btn);
+          });
+
+          row.append(title, sw);
+          grid.appendChild(row);
+        });
+
+        // Apply active styling
+        highlightSelectedShadeButton();
+      }
+
+      function getShadeTextPresentation(color) {
+        const normalized = normalizeHexColor(color);
+        if (!normalized) {
+          return { color: '#111111', variant: 'dark' };
+        }
+
+        const r = parseInt(normalized.slice(0, 2), 16) / 255;
+        const g = parseInt(normalized.slice(2, 4), 16) / 255;
+        const b = parseInt(normalized.slice(4, 6), 16) / 255;
+
+        const toLinear = value => {
+          return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+        };
+
+        const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+        if (luminance > 0.6) {
+          return { color: '#1a1a1a', variant: 'dark' };
+        }
+        return { color: '#ffffff', variant: 'light' };
+      }
+
+      function normalizeHexColor(color) {
+        if (!color || typeof color !== 'string') return null;
+        const hex = color.replace('#', '').trim();
+        if (!hex) return null;
+        if (hex.length === 3) {
+          return hex.split('').map(char => char + char).join('');
+        }
+        if (hex.length === 6) {
+          return hex;
+        }
+        return null;
+      }
+
+      function getCheckboxInputs(name) {
+        return Array.from(document.querySelectorAll(`input[name="${name}"]`));
+      }
+
+      function getCheckedValues(name) {
+        return getCheckboxInputs(name)
+          .filter(input => input.checked)
+          .map(input => input.value);
+      }
+
+      function clearCheckboxGroupValidity(name) {
+        getCheckboxInputs(name).forEach(input => input.setCustomValidity(''));
+      }
+
+      function validateRequiredCheckboxGroups() {
+        return true;
+      }
+
+      function resetCheckboxGroups() {
+        ALL_CHECKBOX_GROUPS.forEach(name => {
+          getCheckboxInputs(name).forEach(input => {
+            input.checked = input.defaultChecked;
+            input.setCustomValidity('');
+          });
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        piezasInput = document.getElementById('piezas');
+        totalInput = document.getElementById('totalCalculado');
+        totalDisplay = document.getElementById('displayTotal');
+        costoField = document.getElementById('costo');
+        aCuentaField = document.getElementById('aCuenta');
+        warningEl = document.getElementById('balanceWarning');
+        feedbackEl = document.getElementById('feedback');
+        feedbackIcon = feedbackEl ? feedbackEl.querySelector('.banner-icon') : null;
+        feedbackText = feedbackEl ? feedbackEl.querySelector('.banner-text') : null;
+        successCardEl = document.getElementById('successCard');
+        successCardMessageEl = document.getElementById('successCardMessage');
+        successCardCloseBtn = document.getElementById('successCardClose');
+        fechaRequeridaInput = document.getElementById('fechaRequerida');
+        urgenteSelect = document.getElementById('urgente');
+        form = document.getElementById('ordenForm');
+        assignPerToothToggle = document.getElementById('assignPerToothToggle');
+        pacienteInputEl = document.getElementById('pacienteInput');
+        notesField = document.getElementById('notas');
+
+        renderVitaShadeGuide();
+        renderBridgeList();
+        setAssignShadeByTooth(false);
+        if (assignPerToothToggle) {
+          assignPerToothToggle.checked = false;
+          assignPerToothToggle.addEventListener('change', () => {
+            setAssignShadeByTooth(assignPerToothToggle.checked);
+            updateOdontogramaHiddenFields();
+          });
+        }
+        updateShadeSummaryUI();
+
+        const bridgeModeToggle = document.getElementById('bridgeModeToggle');
+        const confirmDraftBridgeBtn = document.getElementById('confirmDraftBridgeBtn');
+        const cancelDraftBridgeBtn  = document.getElementById('cancelDraftBridgeBtn');
+
+        if(bridgeModeToggle){
+          bridgeModeToggle.addEventListener('change', ()=>{
+            setMode(bridgeModeToggle.checked?'bridge':'select');
+            if(odontogramaMode!=='bridge'){ clearDraft('maxilar'); clearDraft('mandibula'); }
+          });
+          setMode('select');
+        }
+        if(confirmDraftBridgeBtn){
+          confirmDraftBridgeBtn.addEventListener('click', ()=>{
+            const max = draftBridgeMax.slice(), man = draftBridgeMan.slice();
+            const chosen = max.length>=2 ? max : (man.length>=2 ? man : []);
+            if(chosen.length<2){ mostrarBanner('error','Selecciona al menos dos piezas del mismo arco para crear un puente.'); return; }
+            addBridge(chosen,''); // color ignored—render is always red
+            clearDraft('maxilar'); clearDraft('mandibula');
+            renderBridgeList(); redrawBridgeOverlay(); updateOdontogramaHiddenFields();
+          });
+        }
+        if(cancelDraftBridgeBtn){
+          cancelDraftBridgeBtn.addEventListener('click', ()=>{ clearDraft('maxilar'); clearDraft('mandibula'); });
+        }
+
+        if (successCardCloseBtn) {
+          successCardCloseBtn.addEventListener('click', () => {
+            ocultarSuccessCard();
+          });
+        }
+
+        inicializarFecha();
+        if (urgenteSelect) urgenteSelect.value = 'No';
+        resetCheckboxGroups();
+        if (piezasInput) piezasInput.value = '';
+
+        ALL_CHECKBOX_GROUPS.forEach(name => {
+          getCheckboxInputs(name).forEach(input => {
+            input.addEventListener('change', () => clearCheckboxGroupValidity(name));
+          });
+        });
+
+        if (costoField) costoField.addEventListener('input', calcularTotal);
+        if (aCuentaField) aCuentaField.addEventListener('input', calcularTotal);
+        if (pacienteInputEl) pacienteInputEl.addEventListener('input', () => {
+          updateOdontogramaHiddenFields();
+        });
+        if (notesField) notesField.addEventListener('input', updateOdontogramaHiddenFields);
+
+        if (form) {
+          form.addEventListener('reset', onReset);
+          form.addEventListener('submit', onSubmit);
+        }
+
+        makeImageMapResponsive('#maxilarImg', '#mapMaxilar', ORIGINAL_CIRCLE_COORDS_MAX, 'maxilar');
+        makeImageMapResponsive('#mandibulaImg', '#mapMandibula', ORIGINAL_CIRCLE_COORDS_MAN, 'mandibula');
+        syncToothSelection();
+        calcularTotal();
+        const mapElement = document.getElementById('mapMaxilar');
+        if (mapElement && typeof MutationObserver !== 'undefined') {
+          const observer = new MutationObserver(mutations => {
+            for (const mutation of mutations) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'data-selected') {
+                redrawOverlay();
+                break;
+              }
+            }
+          });
+          observer.observe(mapElement, { attributes: true, subtree: true, attributeFilter: ['data-selected'] });
+        }
+        // Attach click handlers to all <area> tags
+        document.querySelectorAll('#mapMaxilar area').forEach(a=>{
+          a.addEventListener('click', e=>{ e.preventDefault(); handleToothClick(a.getAttribute('alt')||a.getAttribute('title')); });
+        });
+        document.querySelectorAll('#mapMandibula area').forEach(a=>{
+          a.addEventListener('click', e=>{ e.preventDefault(); handleToothClick(a.getAttribute('alt')||a.getAttribute('title')); });
+        });
+
+        updateSelectedTeethDisplay();
+        updateOdontogramaHiddenFields();
+      });
+
+      function inicializarFecha() {
+        if (!fechaRequeridaInput) return;
+        const hoy = new Date();
+        const isoHoy = hoy.toISOString().split('T')[0];
+        fechaRequeridaInput.value = isoHoy;
+        fechaRequeridaInput.min = isoHoy;
+      }
+
+      function calcularTotal() {
+        const costo = parseFloat(costoField && costoField.value.replace(',', '.')) || 0;
+        const aCuenta = parseFloat(aCuentaField && aCuentaField.value.replace(',', '.')) || 0;
+        const total = costo - aCuenta;
+        if (totalInput) totalInput.value = total.toFixed(2);
+        if (totalDisplay) {
+          const formatted = total.toLocaleString('es-MX', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+          totalDisplay.textContent = `$${formatted}`;
+        }
+        validarBalance(costo, aCuenta);
+      }
+
+      function validarBalance(costo, aCuenta) {
+        const valido = aCuenta <= costo;
+        if (warningEl) warningEl.classList.toggle('hidden', valido);
+        if (aCuentaField) aCuentaField.setCustomValidity(valido ? '' : 'El anticipo no puede superar el costo.');
+        return valido;
+      }
+
+      function onReset() {
+        setTimeout(() => {
+          if (piezasInput) piezasInput.value = '';
+          inicializarFecha();
+          if (urgenteSelect) urgenteSelect.value = 'No';
+          resetCheckboxGroups();
+          if (costoField) costoField.value = '';
+          if (aCuentaField) aCuentaField.value = '0.00';
+          calcularTotal();
+          ocultarBanner();
+          toothShadeAssignments.clear();
+          puentesData.length = 0;
+          renderBridgeList();
+          selectedShadeCode = DEFAULT_SHADE_CODE;
+          colorGlobalSelection = DEFAULT_SHADE_CODE;
+          setAssignShadeByTooth(false);
+          if (assignPerToothToggle) assignPerToothToggle.checked = false;
+          renderVitaShadeGuide();
+          syncToothSelection();
+          redrawOverlay();
+          updateSelectedTeethDisplay();
+          updateShadeSummaryUI();
+          updateOdontogramaHiddenFields();
+          const pacInput = document.getElementById('pacienteInput');
+          if (pacInput) pacInput.value = '';
+          const docSearch = document.getElementById('doctorSearch');
+          const docName = document.getElementById('doctorNombre');
+          const docTel = document.getElementById('doctorTel');
+          const docHints = document.getElementById('doctorHints');
+          if (docSearch) docSearch.value = '';
+          if (docName) docName.value = '';
+          if (docTel) docTel.value = '';
+          if (docHints) { docHints.innerHTML = ''; docHints.style.display = 'none'; }
+        }, 0);
+      }
+
+      function onSubmit(event) {
+        event.preventDefault();
+        if (!form) return;
+        const submitButton = document.getElementById('btn-guardar');
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Guardando...';
+        }
+        ocultarBanner();
+        ocultarSuccessCard();
+
+        const checkboxGroupsValid = validateRequiredCheckboxGroups();
+        if (!checkboxGroupsValid || !form.checkValidity()) {
+          form.reportValidity();
+          restaurarBoton(submitButton);
+          return;
+        }
+
+        const costo = parseFloat(costoField && costoField.value.replace(',', '.')) || 0;
+        const aCuenta = parseFloat(aCuentaField && aCuentaField.value.replace(',', '.')) || 0;
+        if (!validarBalance(costo, aCuenta)) {
+          if (aCuentaField) aCuentaField.reportValidity();
+          restaurarBoton(submitButton);
+          return;
+        }
+
+        updateOdontogramaHiddenFields();
+
+        const pacienteNombre = (document.getElementById('pacienteInput')?.value || '').trim();
+        const doctorNombre = (document.getElementById('doctorNombre')?.value || '').trim();
+        const doctorTel = (document.getElementById('doctorTel')?.value || '').trim();
+
+        const datos = {
+          dentistNombre: (document.getElementById('dentistNombre')?.value || '').trim(),
+          dentistApellido: (document.getElementById('dentistApellido')?.value || '').trim(),
+          dentistNumero: (document.getElementById('dentistNumero')?.value || '').trim(),
+          tipoCliente: (document.getElementById('tipoCliente')?.value || '').trim(),
+          pacienteNombre,
+          doctorNombre,
+          doctorTel,
+          patientName: pacienteNombre,
+          fechaRequerida: fechaRequeridaInput?.value || '',
+          urgente: urgenteSelect?.value || 'No',
+          material: getCheckedValues('material'),
+          especificacion: getCheckedValues('especificacion'),
+          tipoTrabajo: getCheckedValues('tipoTrabajo'),
+          selectedTeeth: piezasInput?.value || '',
+          costo: costoField?.value || '0',
+          aCuenta: aCuentaField?.value || '0',
+          totalCalculado: totalInput?.value || '0',
+          garantia: document.getElementById('garantiaSwitch')?.checked ? 'Sí' : 'No',
+          terminado: !!document.getElementById('terminado')?.checked,
+          notas: document.getElementById('notas')?.value.trim() || '',
+          colorGlobal: document.getElementById('colorGlobalInput')?.value || '',
+          coloresPorDiente: document.getElementById('coloresPorDienteInput')?.value || '',
+          coloresPorDientePlano: document.getElementById('coloresPorDientePlanoInput')?.value || '',
+          puentes: document.getElementById('puentesInput')?.value || '',
+          puentesPlano: document.getElementById('puentesPlanoInput')?.value || '',
+          odontogramaJson: document.getElementById('odontogramaJsonInput')?.value || ''
+        };
+
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(orderId => {
+              const mensaje = orderId ? `Orden ${orderId} guardada con éxito.` : 'Orden guardada con éxito.';
+              ocultarBanner();
+              mostrarSuccessCard(mensaje);
+              form.reset();
+              restaurarBoton(submitButton);
+            })
+            .withFailureHandler(error => {
+              const mensaje = error && error.message ? error.message : 'No se pudo guardar la orden.';
+              ocultarSuccessCard();
+              mostrarBanner('error', mensaje);
+              restaurarBoton(submitButton);
+            })
+            .saveOrder(datos);
+        } else {
+          ocultarSuccessCard();
+          mostrarBanner('error', 'La integración con Google Apps Script no está disponible.');
+          restaurarBoton(submitButton);
+        }
+      }
+
+      function restaurarBoton(button) {
+        if (!button) return;
+        button.disabled = false;
+        button.textContent = 'Guardar orden';
+      }
+
+      function mostrarBanner(tipo, mensaje) {
+        ocultarSuccessCard();
+        if (!feedbackEl || !feedbackIcon || !feedbackText) return;
+        feedbackEl.classList.remove('hidden', 'banner-success', 'banner-error');
+        if (tipo === 'success') {
+          feedbackEl.classList.add('banner-success');
+          feedbackIcon.textContent = '✔';
+        } else {
+          feedbackEl.classList.add('banner-error');
+          feedbackIcon.textContent = '⚠';
+        }
+        feedbackText.textContent = mensaje;
+      }
+
+      function ocultarBanner() {
+        if (!feedbackEl) return;
+        feedbackEl.classList.add('hidden');
+        feedbackEl.classList.remove('banner-success', 'banner-error');
+      }
+
+      function mostrarSuccessCard(message) {
+        if (!successCardEl || !successCardMessageEl) return;
+        successCardMessageEl.textContent = message;
+        successCardEl.classList.remove('hidden');
+        successCardEl.classList.remove(SUCCESS_CARD_VISIBLE_CLASS);
+        // Trigger reflow to restart the animation when showing consecutively
+        void successCardEl.offsetWidth;
+        successCardEl.classList.add(SUCCESS_CARD_VISIBLE_CLASS);
+        if (successCardAutoHideTimeoutId !== null) {
+          clearTimeout(successCardAutoHideTimeoutId);
+          successCardAutoHideTimeoutId = null;
+        }
+        successCardAutoHideTimeoutId = setTimeout(() => {
+          ocultarSuccessCard();
+        }, 5000);
+      }
+
+    function ocultarSuccessCard() {
+      if (!successCardEl) return;
+      successCardEl.classList.add('hidden');
+      successCardEl.classList.remove(SUCCESS_CARD_VISIBLE_CLASS);
+      if (successCardMessageEl) {
+        successCardMessageEl.textContent = '';
+      }
+      if (successCardAutoHideTimeoutId !== null) {
+        clearTimeout(successCardAutoHideTimeoutId);
+        successCardAutoHideTimeoutId = null;
+      }
+    }
+  })();
+
+</script>
+</body>
+</html>
