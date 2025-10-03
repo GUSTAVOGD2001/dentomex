@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es" class="<?= (format === 'pos80') ? 'pos80' : 'a4' ?>">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recibo Smile Center</title>
+  <style>
+    :root {
+      --text: #222;
+      --muted: #666;
+      --border: #e5e7eb;
+      --accent: #111;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: #fff;
+      margin: 24px;
+      line-height: 1.45;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    header img {
+      height: 64px;
+      width: auto;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 2px 0 0;
+      font-size: 0.95rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0 20px;
+    }
+    .section {
+      margin-bottom: 16px;
+    }
+    .section h2 {
+      font-size: 1rem;
+      margin: 0 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--border);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 8px 16px;
+    }
+    .label {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .value {
+      color: var(--text);
+      word-break: break-word;
+    }
+    .print {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .print button {
+      padding: 10px 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .print button:hover { opacity: 0.9; }
+
+    /* Modo impresión */
+    @media print {
+      .print { display: none; }
+      body { margin: 0.5in; }
+    }
+
+    /* ——— Aesthetic polish ——— */
+    :root {
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #111827;
+      --bg-soft: #f8fafc;
+      --badge-bg: #eef2ff;
+      --badge-text: #3730a3;
+      --ok-bg: #ecfdf5;
+      --ok-text: #065f46;
+      --warn-bg: #fff7ed;
+      --warn-text: #9a3412;
+      --pend-bg: #fef2f2;
+      --pend-text: #991b1b;
+    }
+
+    body { font-size: 14px; letter-spacing: .1px; }
+    header { align-items: flex-start; gap: 18px; }
+    header img { height: 72px; }
+
+    .header-meta {
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; color:var(--muted);
+      font-size: 0.9rem;
+    }
+    .header-meta .chip {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      padding: 4px 8px; border-radius: 999px; font-weight: 600;
+    }
+
+    .section { margin-bottom: 18px; }
+    .section h2 {
+      display:flex; justify-content:space-between; align-items:center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Grid refinements */
+    .grid { row-gap: 10px; }
+    .label { color: var(--muted); }
+    .value { color: var(--text); }
+
+    /* Badges for Estado / Garantía / Terminado */
+    .badge {
+      display:inline-block; font-weight:700; font-size:.85rem;
+      padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--badge-bg); color: var(--badge-text);
+    }
+    .badge[data-state="Entregado"] { background: var(--ok-bg); color: var(--ok-text); border-color:#a7f3d0; }
+    .badge[data-state="Terminado"] { background: #eff6ff; color:#1e3a8a; border-color:#bfdbfe; }
+    .badge[data-state="En proceso"] { background: var(--warn-bg); color: var(--warn-text); border-color:#fed7aa; }
+    .badge[data-state="Pendiente"] { background: var(--pend-bg); color: var(--pend-text); border-color:#fecaca; }
+
+    /* Totals card */
+    .totals {
+      display:grid; grid-template-columns: 1fr auto; gap:8px 16px;
+      background: var(--bg-soft); border:1px solid var(--border);
+      padding:14px 16px; border-radius:10px;
+    }
+    .totals .label { color: var(--muted); }
+    .totals .money { font-variant-numeric: tabular-nums; text-align:right; }
+    .totals .grand {
+      grid-column: 1 / -1; display:flex; justify-content:space-between; align-items:center;
+      padding-top:8px; margin-top:4px; border-top:1px dashed var(--border);
+    }
+    .totals .grand span:first-child { font-weight:700; letter-spacing:.2px; }
+    .totals .grand .amount { font-size:1.25rem; font-weight:800; }
+
+    /* Odontograma print label bump */
+    @media print { .odo-overlay text { font-size: 32px !important; } }
+
+    /* Print polish */
+    @media print {
+      @page { margin: 12mm; }
+      body { margin: 0; }
+      header img { filter: none; }
+      .section { break-inside: avoid; page-break-inside: avoid; }
+    }
+
+    /* ==== Odontograma Bridge Styling ==== */
+    .bridge-path {
+      stroke: #d32f2f; /* always red */
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .bridge-node {
+      fill: #ffffff;     /* white puck masks background */
+      stroke: #d32f2f;   /* red ring */
+      stroke-width: 3;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.15));
+    }
+
+    .bridge-node-label {
+      fill: #d32f2f;     /* red number */
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      stroke: #ffffff;   /* subtle outline for print contrast */
+      stroke-width: 2;
+      paint-order: stroke fill;
+    }
+
+    @media print {
+      .bridge-node { stroke-width: 2.5; }
+      .bridge-node-label { stroke-width: 1.5; }
+    }
+
+    /* ===== Ticket térmico 80mm ===== */
+    html.pos80 body {
+      margin: 0;
+      font-size: 12px;
+    }
+    html.pos80 .print { display: none; }
+
+    @media print {
+      html.pos80, html.pos80 body {
+        width: 80mm;
+      }
+      html.pos80 body {
+        margin: 0;
+        padding: 0;
+      }
+      html.pos80 .container,
+      html.pos80 .section,
+      html.pos80 header {
+        width: 72mm;
+        padding: 0 4mm;
+      }
+      html.pos80 header img {
+        height: 36px; width: auto;
+      }
+      html.pos80 h1 { font-size: 14px; margin: 2mm 0 1mm; }
+      html.pos80 .grid {
+        display: block;
+      }
+      html.pos80 .grid .label { display: inline-block; min-width: 26mm; }
+      html.pos80 .odo-canvas,
+      html.pos80 .odo-overlay,
+      html.pos80 .odo-legend {
+        display: none !important;
+      }
+      html.pos80 .divider { margin: 2mm 0; border-top: 1px dashed #999; }
+    }
+
+    /* ===== Screen compact: ~40% smaller odontograma + tighter layout ===== */
+    body.page-compact {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    body.page-compact header img { height: 60px; }
+    body.page-compact .section { margin-bottom: 14px; }
+    body.page-compact .section h2 { font-size: 0.98rem; padding-bottom: 5px; }
+
+    /* Narrow label column and reduce gaps on screen */
+    body.page-compact .grid {
+      grid-template-columns: 180px 1fr;
+      gap: 8px 12px;
+    }
+
+    /* Odontograma ~40% smaller on screen */
+    .odo-wrap.compact .odo-canvas { width: 320px; max-width: 100%; }
+    .odo-wrap.compact .odo-overlay text { font-size: 22px; }
+
+  </style>
+  <? if (format === 'pos80') { ?>
+  <style>
+    @media print {
+      /* Thermal: force roll width & zero margins */
+      @page { size: 80mm auto; margin: 0; }
+      html, body { width: 80mm; margin: 0 !important; padding: 0 !important; }
+    }
+  </style>
+  <? } ?>
+  <? if ((format || 'a4') !== 'pos80') { ?>
+  <style>
+    /* ===== A4 one-page compact print mode ===== */
+    @media print {
+      /* Force A4 with comfortable margins */
+      @page { size: A4; margin: 10mm; }
+
+      /* Global compactness */
+      body { margin: 0; font-size: 12px; line-height: 1.35; color: #111; }
+
+      /* Header: smaller logo, hide subtitle/chips to save space */
+      header img { height: 56px !important; }
+      .subtitle, .header-meta { display: none !important; }
+
+      /* Sections: tighter spacing */
+      .section { margin-bottom: 12px !important; }
+      .section h2 { font-size: 0.95rem; padding-bottom: 4px; }
+
+      /* Grid: narrower labels, tighter gaps */
+      .grid {
+        grid-template-columns: 160px 1fr !important;
+        gap: 6px 12px !important;
+        row-gap: 6px !important;
+      }
+      .label { font-weight: 600; }
+      .value { word-break: break-word; }
+
+      /* Totals card: compact */
+      .totals {
+        padding: 10px 12px !important;
+        gap: 6px 12px !important;
+      }
+      .totals .grand { padding-top: 6px !important; margin-top: 2px !important; }
+      .totals .grand .amount { font-size: 1.05rem !important; }
+
+      /* Odontograma: scale down and keep side-by-side if possible */
+      .odo-canvas { width: 360px !important; }
+      .odo-overlay text { font-size: 22px !important; }
+      .odo-overlay .halo { opacity: 0.9; }
+
+      /* Avoid breaks inside key blocks; hide buttons */
+      .section, .odo-canvas, .totals { break-inside: avoid; page-break-inside: avoid; }
+      .print { display: none !important; }
+    }
+
+    /* Extra compaction if still over one page (JS adds this class before print) */
+    @media print {
+      body.fit-onepage { font-size: 11px; }
+      body.fit-onepage .grid { grid-template-columns: 150px 1fr !important; }
+      body.fit-onepage .odo-canvas { width: 320px !important; }
+      body.fit-onepage .odo-overlay text { font-size: 20px !important; }
+      body.fit-onepage header img { height: 48px !important; }
+    }
+
+    /* ===== Print (A4) compact: aligns with one-page setup ===== */
+    @media print {
+      @page { size: A4; margin: 10mm; } /* keep A4 with 10mm margins */
+      body { margin: 0; font-size: 12px; line-height: 1.35; }
+      .subtitle, .header-meta, .print { display: none !important; }
+
+      .section { margin-bottom: 12px !important; }
+      .section h2 { font-size: 0.95rem; padding-bottom: 4px; }
+
+      /* Tighten grid for print */
+      .grid {
+        grid-template-columns: 160px 1fr !important;
+        gap: 6px 12px !important;
+        row-gap: 6px !important;
+      }
+
+      /* Odontograma ~40% smaller for print */
+      .odo-wrap.compact .odo-canvas { width: 300px !important; }
+      .odo-wrap.compact .odo-overlay text { font-size: 20px !important; }
+
+      .section, .odo-canvas, .totals { break-inside: avoid; page-break-inside: avoid; }
+    }
+
+    /* Extra squeeze if still over one page (coexists with your fit-onepage JS) */
+    @media print {
+      body.fit-onepage { font-size: 11px; }
+      body.fit-onepage .grid { grid-template-columns: 150px 1fr !important; }
+      body.fit-onepage .odo-wrap.compact .odo-canvas { width: 280px !important; }
+      body.fit-onepage .odo-wrap.compact .odo-overlay text { font-size: 18px !important; }
+      body.fit-onepage header img { height: 48px !important; }
+    }
+  </style>
+  <? } ?>
+</head>
+<body class="page-compact">
+  <header>
+    <img src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/Smile%20Center.svg" alt="Smile Center Logo" />
+    <div>
+      <h1>Smile Center — Recibo de Orden</h1>
+      <p class="subtitle">Documento de referencia para el paciente y el laboratorio</p>
+      <div class="header-meta">
+        <span class="chip">ID: <strong style="margin-left:6px; letter-spacing:.3px;"><?= record['ID Orden'] ?></strong></span>
+        <span class="chip">Creada: <strong style="margin-left:6px;"><?= record['Fecha de creación'] || record['Timestamp'] ?></strong></span>
+        <span class="chip">Requerida: <strong style="margin-left:6px;"><?= record['Fecha Requerida'] ?></strong></span>
+      </div>
+    </div>
+  </header>
+  <hr />
+
+  <section class="section">
+    <h2>Datos de la orden</h2>
+    <div class="grid">
+      <div class="label">ID Orden</div><div class="value"><?= record['ID Orden'] ?></div>
+      <div class="label">Fecha de creación</div><div class="value"><?= record['Timestamp'] ?></div>
+      <div class="label">Estado</div>
+      <div class="value">
+        <span class="badge" data-state="<?= record['Estado'] ?>"><?= record['Estado'] ?></span>
+      </div>
+      <div class="label">Fecha requerida</div><div class="value"><?= record['Fecha Requerida'] ?></div>
+      <div class="label">Garantía</div><div class="value"><?= record['Garantía'] ?></div>
+      <div class="label">Terminado</div><div class="value"><?= record['Terminado'] ?></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Cliente</h2>
+    <div class="grid">
+      <div class="label">Dentista</div><div class="value"><?= record['Nombre'] ?> <?= record['Apellido'] ?></div>
+      <div class="label">Teléfono</div><div class="value"><?= record['Teléfono'] ?></div>
+      <div class="label">Paciente</div><div class="value"><?= record['Paciente'] ?></div>
+    </div>
+  </section>
+
+<section class="section">
+  <h2>Detalles del trabajo</h2>
+  <div class="grid">
+    <div class="label">Tipo de trabajo</div><div class="value"><?= record['Tipo de trabajo'] ?></div>
+    <div class="label">Material</div><div class="value"><?= record['Material'] ?></div>
+    <div class="label">Especificación</div><div class="value"><?= record['Especificación'] ?></div>
+    <div class="label">Dientes seleccionados</div><div class="value"><?= record['Dientes Seleccionados'] ?></div>
+    <div class="label">Color global</div><div class="value"><?= record['Color Global'] ?></div>
+    <div class="label">Colores por diente</div><div class="value"><?= record['Colores por Diente'] ?></div>
+    <div class="label">Puentes</div><div class="value"><?= record['Puentes'] ?></div>
+    <!-- Removed: Odontograma JSON row -->
+  </div>
+</section>
+
+<section class="section">
+  <h2>Odontograma</h2>
+
+
+  <style>
+    .odo-wrap{
+      display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start;
+      padding:8px 0;
+    }
+    .odo-canvas{
+      position:relative; width:520px; max-width:100%;
+    }
+    .odo-img{ width:100%; height:auto; display:block; }
+    .odo-overlay{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .odo-overlay text{
+      fill:#fff; stroke:rgba(0,0,0,.55); stroke-width:4; paint-order:stroke fill;
+      font: 700 28px Montserrat, Arial, sans-serif; text-anchor:middle; dominant-baseline:middle;
+    }
+    .odo-overlay .halo{ fill:rgba(74,144,226,.35); stroke:#3268a3; opacity:.95; }
+    @media print { .odo-canvas{ break-inside:avoid; page-break-inside:avoid; } }
+  </style>
+
+  <div class="odo-wrap compact">
+    <!-- MAXILAR -->
+    <div class="odo-canvas" id="odoMax">
+      <img class="odo-img" id="imgMax"
+           src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/maxi.png"
+           data-base-w="1100" data-base-h="1100" alt="Odontograma maxilar">
+      <svg class="odo-overlay" id="labMax" viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg class="odo-overlay" id="brMax"  viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <!-- MANDÍBULA -->
+    <div class="odo-canvas" id="odoMan">
+      <img class="odo-img" id="imgMan"
+           src="https://raw.githubusercontent.com/reaperkaeru/host-pics/refs/heads/main/mandi.png"
+           data-base-w="1100" data-base-h="1100" alt="Odontograma mandíbula">
+      <svg class="odo-overlay" id="labMan" viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg class="odo-overlay" id="brMan"  viewBox="0 0 1100 1100" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <script>
+    // ==== Data from server (view model) ====
+    const selectedTeeth = <?!= JSON.stringify(view.selectedTeeth || []) ?>;
+    const perTooth      = <?!= JSON.stringify(view.perTooth || {}) ?>;
+    const bridges       = <?!= JSON.stringify(view.bridges || []) ?>;
+    const globalShade   = <?!= JSON.stringify(view.globalShade || '') ?>;
+
+
+    // ==== VITA shades (same palette you use) ====
+    const SHADES = {
+      "A1":"#f8e6d0","A2":"#f1d3b5","A3":"#e5c199","A3.5":"#d8a97e","A4":"#c8966a",
+      "B1":"#f7e9d5","B2":"#eed6b8","B3":"#e4c49c","B4":"#d3ab79",
+      "C1":"#f3e4cf","C2":"#e7d0b2","C3":"#dcbf98","C4":"#c7a87b",
+      "D2":"#ead5bb","D3":"#dec29f","D4":"#caaa7b"
+    };
+
+    // ==== Coordinates: 1100x1100 base (center + radius) ====
+    // Maxilar (from your <area> coords)
+    const COORD_MAX = {
+      "18":[82,1019,68],"17":[105,845,69],"16":[143,671,83],"15":[183,503,66],
+      "14":[229,370,64],"13":[285,251,64],"12":[352,147,53],"11":[470,85,63],
+      "21":[643,87,65],"22":[764,150,57],"23":[830,252,61],"24":[893,378,65],
+      "25":[937,505,64],"26":[974,669,85],"27":[1014,843,70],"28":[1020,1018,69]
+    };
+    // Mandíbula
+    const COORD_MAN = {
+      "41":[478,1034,48],"42":[360,973,50],"43":[275,872,55],"44":[217,758,61],
+      "45":[181,627,59],"46":[150,465,83],"47":[113,284,77],"48":[83,108,69],
+      "31":[616,1031,49],"32":[731,969,50],"33":[821,869,51],"34":[877,760,55],
+      "35":[923,631,63],"36":[963,466,83],"37":[992,275,80],"38":[1005,92,72]
+    };
+
+    const TOOTH_ORDER = ['11','12','13','14','15','16','17','18','21','22','23','24','25','26','27','28','31','32','33','34','35','36','37','38','41','42','43','44','45','46','47','48'];
+
+    function archOf(t){ const q=(t||'')[0]; return (q==='1'||q==='2')?'max':'man'; }
+    function shadeOf(tooth){ return perTooth[tooth] || globalShade || 'A2'; }
+    function strokeColor(hex){
+      if(!hex) return '#2b5c8f';
+      const c = hex.replace('#',''); const r=parseInt(c.slice(0,2),16)-35,
+            g=parseInt(c.slice(2,4),16)-35, b=parseInt(c.slice(4,6),16)-35;
+      const cl = v => Math.max(0,Math.min(255,v));
+      return `#${[cl(r),cl(g),cl(b)].map(v=>v.toString(16).padStart(2,'0')).join('')}`;
+    }
+
+    function drawTeeth(map, svgId){
+      const svg = document.getElementById(svgId);
+      if(!svg) return;
+      svg.innerHTML = '';
+      const sel = new Set(selectedTeeth);
+      // Sort for stable drawing
+      const teeth = [...sel].sort((a,b)=>TOOTH_ORDER.indexOf(a)-TOOTH_ORDER.indexOf(b));
+      teeth.forEach(t=>{
+        const c = map[t]; if(!c) return;
+        const [cx,cy,r] = c;
+        const shade = shadeOf(t);
+        const hex = SHADES[shade] || '#4a90e2';
+        const halo = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        halo.setAttribute('cx',cx); halo.setAttribute('cy',cy); halo.setAttribute('r', Math.max(18, r*0.85));
+        halo.setAttribute('class','halo');
+        halo.setAttribute('fill', hex.replace('#','') ? `rgba(0,0,0,0)` : 'rgba(74,144,226,.35)');
+        halo.setAttribute('stroke', strokeColor(hex));
+        halo.setAttribute('stroke-width', Math.max(3, r*0.18));
+        svg.appendChild(halo);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+        label.setAttribute('x',cx); label.setAttribute('y',cy);
+        label.setAttribute('font-size', Math.max(22, r*0.55));
+        label.textContent = t;
+        svg.appendChild(label);
+      });
+    }
+
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+    function averageRadius(points) {
+      if (!points || !points.length) return 10;
+      var sum = 0, n = 0;
+      points.forEach(function (p) { if (p && typeof p[2] === 'number') { sum += p[2]; n++; } });
+      return n ? (sum / n) : 10;
+    }
+
+    function drawBridges(map, svgId) {
+      var svg = document.getElementById(svgId);
+      if (!svg) return;
+      svg.innerHTML = '';
+
+      (bridges || []).forEach(function (b) {
+        var teeth = (b && Array.isArray(b.dientes)) ? b.dientes.slice() : [];
+        if (teeth.length < 2) return;
+
+        var pts = teeth
+          .map(function (t) { return { id: t, p: map[t] }; })
+          .filter(function (o) { return !!o.p; });
+
+        if (pts.length < 2) return;
+
+        var avgR = averageRadius(pts.map(function (o) { return o.p; }));
+
+        var dAttr = pts.map(function (o, i) {
+          var p = o.p;
+          return (i ? 'L' : 'M') + p[0] + ',' + p[1];
+        }).join(' ');
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', dAttr);
+        path.setAttribute('class', 'bridge-path');
+        path.setAttribute('stroke-width', clamp(avgR * 0.42, 6, 16));
+        svg.appendChild(path);
+
+        pts.forEach(function (o) {
+          var x = o.p[0], y = o.p[1], r = o.p[2];
+          var nodeR = clamp(r * 0.38, 11, 20);
+          var fs = clamp(nodeR * 0.95, 12, 18);
+
+          var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('cx', x);
+          dot.setAttribute('cy', y);
+          dot.setAttribute('r', nodeR);
+          dot.setAttribute('class', 'bridge-node');
+          svg.appendChild(dot);
+
+          var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          label.setAttribute('x', x);
+          label.setAttribute('y', y);
+          label.setAttribute('class', 'bridge-node-label');
+          label.setAttribute('font-size', fs);
+          label.textContent = o.id;
+          svg.appendChild(label);
+        });
+      });
+    }
+
+    // Draw once (static size viewBox keeps vector sharp for print)
+    drawTeeth(COORD_MAX, 'labMax');  drawBridges(COORD_MAX, 'brMax');
+    drawTeeth(COORD_MAN, 'labMan');  drawBridges(COORD_MAN, 'brMan');
+  </script>
+</section>
+
+<div style="margin-top:6px; color:#555; font-size:12px;">
+  <strong>Puentes:</strong> <span id="bridgesSummary">—</span>
+</div>
+<script>
+  (function () {
+    var el = document.getElementById('bridgesSummary');
+    if (!el) return;
+    if (!bridges || !bridges.length) { el.textContent = '—'; return; }
+    var txt = bridges.map(function (b, i) {
+      var run = Array.isArray(b && b.dientes) ? b.dientes.join('-') : '';
+      if (!run) return null;
+      var col = (b && b.color) ? (' (' + b.color + ')') : '';
+      return '#' + (i + 1) + ': ' + run + col;
+    }).filter(Boolean).join('; ');
+    el.textContent = txt || '—';
+  })();
+</script>
+
+
+  <section class="section">
+    <h2>Costos</h2>
+    <div class="totals">
+      <div class="label">Costo</div><div class="money">$<?= record['Costo'] ?></div>
+      <div class="label">A cuenta</div><div class="money">$<?= record['A Cuenta'] ?></div>
+      <div class="grand">
+        <span>Total</span>
+        <span class="amount">$<?= record['Total'] ?></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Notas</h2>
+    <div class="value"><?= record['Notas'] ?></div>
+  </section>
+
+  <? if ((format || 'a4') !== 'pos80') { ?>
+  <div class="print">
+    <button type="button" onclick="window.print()">Imprimir A4</button>
+    <a id="pos80Link" class="btn" target="_top" rel="noopener">Ticket 80 mm</a>
+  </div>
+  <script>
+  (function () {
+    // Always build from the actual deployment exec base, not the current host
+    var execBase = '<?= execBase ?>';
+    // Fallback to current URL’s origin if somehow empty
+    if (!execBase) { execBase = location.origin + location.pathname; }
+    var id = '<?= record["ID Orden"] ?>';
+    var href = execBase + '?id=' + encodeURIComponent(id) + '&format=pos58';
+    document.getElementById('pos80Link').href = href;
+  })();
+  </script>
+  <? } ?>
+
+  <script>
+    // Opcional: formatear fechas si vienen como objetos serializados.
+    // (Apps Script suele inyectar Date como string legible)
+  </script>
+  <script>
+    // Hide label+value pairs whose value is empty or noise to shorten the printout
+    (function () {
+      document.querySelectorAll('.grid').forEach(grid => {
+        const cells = Array.from(grid.children);
+        for (let i = 0; i < cells.length; i += 2) {
+          const v = (cells[i + 1]?.textContent || '').trim();
+          if (!v || v === '{}' || v === '[]' || v === '-') {
+            cells[i].style.display = 'none';
+            if (cells[i + 1]) cells[i + 1].style.display = 'none';
+          }
+        }
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      function ensureOnePage() {
+        // Solo aplica a A4, no a POS
+        var isPos = document.documentElement.classList.contains('pos80');
+        if (isPos) return;
+        const thresholdPx = 1120;
+        const h = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight
+        );
+        if (h > thresholdPx) document.body.classList.add('fit-onepage');
+      }
+      if (document.readyState === 'complete') ensureOnePage();
+      else window.addEventListener('load', ensureOnePage);
+      const mq = window.matchMedia && window.matchMedia('print');
+      mq && mq.addEventListener && mq.addEventListener('change', e => { if (e.matches) ensureOnePage(); });
+    })();
+  </script>
+  <? if (format === 'pos80') { ?>
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function(){ window.print(); }, 250);
+    });
+  </script>
+  <? } ?>
+</body>
+</html>
